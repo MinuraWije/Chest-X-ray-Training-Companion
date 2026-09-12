@@ -1,0 +1,38 @@
+# Normalise line endings. Development is on Windows, so without this every
+# `git add` prints ~180 "LF will be replaced by CRLF" warnings and any file
+# touched on a different machine shows as wholly rewritten in the diff — which
+# buries real changes in a thesis artefact whose history is part of the
+# submission.
+#
+# `text=auto eol=lf` stores LF in the repository and checks out LF. Git does
+# not rewrite the working copy of already-committed files, so existing CRLF
+# files normalise the next time they are edited rather than in one churn
+# commit.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF or cmd.exe mis-parses them.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary: never touch, never diff as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.db binary
+*.sqlite3 binary
+
+# Generated. Collapsed in diffs and excluded from language statistics so the
+# repo is reported as Python/TypeScript rather than as a pile of JSON.
+data/corpus/index.json linguist-generated=true
+data/processed/manifest.csv linguist-generated=true -diff
+data/raw/PROVENANCE.json linguist-generated=true -diff
+backend/reports/** linguist-generated=true
+
+# Notebooks diff badly; mark them so review does not try.
+*.ipynb -diff linguist-detectable=false

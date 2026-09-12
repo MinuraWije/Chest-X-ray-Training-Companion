@@ -250,6 +250,24 @@ def cmd_eval(args: argparse.Namespace) -> int:
     return _run([_venv_python(), "scripts/run_eval.py", *extra])
 
 
+def cmd_corpus(args: argparse.Namespace) -> int:
+    """Build and validate the Phase 2 retrieval corpus."""
+    extra = list(getattr(args, "corpus_args", []) or [])
+    return _run([_venv_python(), "scripts/build_corpus.py", *extra])
+
+
+def cmd_feedback_eval(args: argparse.Namespace) -> int:
+    """Run the Phase 2 feedback evaluation across the five arms."""
+    extra = list(getattr(args, "feedback_eval_args", []) or [])
+    return _run([_venv_python(), "scripts/run_feedback_eval.py", *extra])
+
+
+def cmd_labels(args: argparse.Namespace) -> int:
+    """Export relevance-labelling pairs, or score the proxy against them."""
+    extra = list(getattr(args, "labels_args", []) or [])
+    return _run([_venv_python(), "scripts/label_relevance.py", *extra])
+
+
 def cmd_clean(_: argparse.Namespace) -> int:
     targets = [".pytest_cache", ".mypy_cache", ".ruff_cache", ".coverage", "htmlcov", "cxt.db", "data"]
     for name in targets:
@@ -315,6 +333,25 @@ def build_parser() -> argparse.ArgumentParser:
         help="Run scripts/run_eval.py (extra args are forwarded, e.g. --runtime kaggle_tunnel)",
     )
     eval_parser.set_defaults(func=cmd_eval)
+
+    # Phase 2. All three take passthrough args for the same reason `eval` does.
+    corpus_parser = sub.add_parser(
+        "corpus",
+        help="Run scripts/build_corpus.py (forwards --check / --stats)",
+    )
+    corpus_parser.set_defaults(func=cmd_corpus)
+
+    feedback_parser = sub.add_parser(
+        "feedback-eval",
+        help="Run scripts/run_feedback_eval.py (forwards --max-cases / --arms / --runtime)",
+    )
+    feedback_parser.set_defaults(func=cmd_feedback_eval)
+
+    labels_parser = sub.add_parser(
+        "labels",
+        help="Run scripts/label_relevance.py (needs `export` or `validate`)",
+    )
+    labels_parser.set_defaults(func=cmd_labels)
 
     real_data = sub.add_parser(
         "real-data",
@@ -390,11 +427,18 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     raw = argv if argv is not None else sys.argv[1:]
-    # `eval` forwards its flags to run_eval.py, so unknown args are expected
-    # there and only there.
-    if raw and raw[0] == "eval":
+    # These subcommands forward their flags to a script, so unknown args are
+    # expected for them and only for them — everywhere else a typo should still
+    # be an error rather than being silently passed along.
+    passthrough = {
+        "eval": "eval_args",
+        "corpus": "corpus_args",
+        "feedback-eval": "feedback_eval_args",
+        "labels": "labels_args",
+    }
+    if raw and raw[0] in passthrough:
         args, extra = parser.parse_known_args(raw)
-        args.eval_args = extra
+        setattr(args, passthrough[raw[0]], extra)
     else:
         args = parser.parse_args(raw)
     result: int = args.func(args)
