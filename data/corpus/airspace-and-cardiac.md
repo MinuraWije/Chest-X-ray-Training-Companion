@@ -1,6 +1,6 @@
 ---
 source: "Chest X-ray Training Companion — authored teaching note"
-url: "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md"
+url: "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md"
 licence: "CC BY-NC-SA 3.0"
 licence_url: "https://creativecommons.org/licenses/by-nc-sa/3.0/"
 retrieved_on: "2026-09-12"

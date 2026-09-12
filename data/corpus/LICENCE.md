@@ -51,3 +51,16 @@ Radiopaedia serves HTTP 403 to automated clients, so its articles must be
 retrieved by hand before they can be chunked. Replacing these authored notes
 with Radiopaedia-derived chunks is a content change only: the front matter,
 the loader, the licence allowlist and the retrievers all stay as they are.
+
+## WHO-aligned authored notes (`who-aligned-notes.md`)
+
+The WHO Manual of Diagnostic Imaging (Ellis & Flower, 2006) remains rejected
+as a verbatim source for the reason in the table above. The seven chunks in
+`who-aligned-notes.md` are **authored paraphrases, not WHO extracts**: they
+were written for this project from the WHO headings covering the project's
+finding set (Ch. 3 How to read a CXR; Ch. 4 Pattern recognition; Ch. 6 Lung
+tumours / solitary pulmonary nodule; Ch. 7 Pneumonias; Ch. 10 Pleural disease;
+Ch. 11 Left heart failure; Ch. 12 Cardiac), and they carry the project's own
+`source` attribution — no chunk claims WHO origin. If WHO Press ever grants
+written permission, verbatim extracts can be added as a separate file under
+their own front matter; the loader needs no changes.

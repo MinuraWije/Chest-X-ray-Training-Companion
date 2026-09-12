@@ -190,10 +190,29 @@ def get_case_repository(
     return ManifestRepository(settings.manifest_path)
 
 
-@lru_cache(maxsize=1)
-def _tunnel_client(settings: Settings) -> KaggleTunnelMedGemmaClient:
-    """One client (and one httpx connection pool) per process, not per request."""
-    return KaggleTunnelMedGemmaClient(settings)
+@lru_cache(maxsize=4)
+def _tunnel_client(
+    tunnel_url: str,
+    timeout_seconds: float,
+    max_retries: int,
+    max_new_tokens: int,
+    warmup_timeout_seconds: float,
+) -> KaggleTunnelMedGemmaClient:
+    """One client (and one httpx connection pool) per distinct config, not per request.
+
+    Cached on hashable primitives — the previous version took the whole
+    `Settings` object, which is unhashable (Pydantic BaseSettings defines
+    __eq__ without __hash__), so every `kaggle_tunnel` submission crashed
+    with `TypeError: unhashable type: 'Settings'` inside `lru_cache`.
+    """
+    snapshot = Settings.model_construct(
+        medgemma_tunnel_url=tunnel_url,
+        medgemma_timeout_seconds=timeout_seconds,
+        medgemma_max_retries=max_retries,
+        medgemma_max_new_tokens=max_new_tokens,
+        medgemma_warmup_timeout_seconds=warmup_timeout_seconds,
+    )
+    return KaggleTunnelMedGemmaClient(snapshot)
 
 
 def get_image_analyzer(
@@ -207,7 +226,15 @@ def get_image_analyzer(
             "Set MEDGEMMA_RUNTIME=dry_run in backend/.env for offline dev, "
             "or paste the ngrok URL from your Kaggle notebook into MEDGEMMA_TUNNEL_URL."
         )
-    return MedGemmaAnalyzer(client=_tunnel_client(settings))
+    return MedGemmaAnalyzer(
+        client=_tunnel_client(
+            settings.medgemma_tunnel_url,
+            settings.medgemma_timeout_seconds,
+            settings.medgemma_max_retries,
+            settings.medgemma_max_new_tokens,
+            settings.medgemma_warmup_timeout_seconds,
+        )
+    )
 
 
 def get_image_loader(
@@ -257,3 +284,4 @@ def reset_dependency_caches_for_tests() -> None:
     _build_session_factory_cached.cache_clear()
     _load_corpus_cached.cache_clear()
     _build_retriever.cache_clear()
+    _tunnel_client.cache_clear()

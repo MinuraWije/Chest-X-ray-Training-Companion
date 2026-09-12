@@ -1,13 +1,13 @@
 {
-  "version": "c1.23.c27526eaeb9b",
-  "chunk_count": 23,
+  "version": "c1.30.ae7502d34265",
+  "chunk_count": 30,
   "chunks": [
     {
       "id": "airspace-air-bronchogram",
       "title": "Air bronchograms",
       "text": "An air bronchogram is a branching, air-filled bronchus made visible because the\nalveoli around it have filled with fluid, pus, blood or cells while the airway\nitself stays patent. Normally bronchi are invisible beyond the hila, since air\ninside an airway surrounded by air has no contrast. Seeing dark branching tubes\nwithin an area of increased density is strong evidence that the opacity is\nwithin the lung rather than in the pleural space, which is what separates\nconsolidation from a pleural effusion or a pleural mass.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -25,7 +25,7 @@
       "title": "The silhouette sign",
       "text": "Two structures of similar density in direct anatomical contact lose the border\nbetween them. A consolidated right middle lobe abuts the right heart border and\nerases it; a right lower lobe consolidation sits posteriorly, leaves the heart\nborder crisp, and obscures the hemidiaphragm instead. Lingular disease erases\nthe left heart border, left lower lobe disease the left hemidiaphragm. The sign\nis therefore a localiser: which border has disappeared tells you which lobe is\ninvolved, without a lateral film.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -43,7 +43,7 @@
       "title": "Consolidation does not mean infection",
       "text": "Consolidation is a description of alveolar filling, not a diagnosis. Pneumonia\nis the commonest cause, but pulmonary oedema, haemorrhage, aspiration,\ninfarction, contusion and some malignancies produce the same appearance.\nDistribution helps: perihilar and bilaterally symmetrical suggests oedema; a\nsingle lobe with a fissural boundary suggests lobar pneumonia; peripheral and\nwedge-shaped raises infarction. A student who writes \"consolidation\" and\ndescribes its distribution is on firmer ground than one who writes \"pneumonia\".",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -61,7 +61,7 @@
       "title": "Distinguishing consolidation from collapse",
       "text": "Both produce increased density. Consolidation fills the lung but preserves its\nvolume, so the fissures stay in place and the mediastinum does not move.\nCollapse loses volume, so the fissure displaces toward the affected area, the\nhemidiaphragm rises, the hilum is pulled up or down, and the mediastinum shifts\ntoward the opacity. Volume loss is the discriminator, and the position of the\nmediastinum is the easiest place to look for it.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -79,7 +79,7 @@
       "title": "Measuring the cardiothoracic ratio",
       "text": "The cardiothoracic ratio is the maximum transverse cardiac diameter divided by\nthe maximum internal transverse diameter of the thorax, measured on the same\nerect PA film at full inspiration. A ratio at or below 0.50 is normal. Above\n0.50 on an adequate PA film suggests cardiomegaly, and the degree matters less\nthan the trend across serial films. The measurement is a ratio of two widths on\none image, so both must be taken at their widest points, not estimated by eye.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -97,7 +97,7 @@
       "title": "Why AP projection invalidates the ratio",
       "text": "On a PA film the heart lies close to the detector and is projected near its true\nsize. On an AP film — which is what portable and supine radiographs are — the\nX-ray source is in front and the heart is further from the detector, so it is\nmagnified, typically by 15 to 20 per cent. A low lung volume from a shallow\nsupine inspiration widens the cardiac silhouette further. A heart that looks\nenlarged on an AP film may be entirely normal, so the correct report is that\ncardiac size cannot be assessed on this projection, rather than a number treated\nas if it were diagnostic.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -114,7 +114,7 @@
       "title": "Cardiomegaly versus an apparently large heart",
       "text": "Several things widen the cardiac silhouette without the heart being enlarged: a\npericardial effusion, which gives a smooth globular \"water-bottle\" outline; a\nlarge anterior mediastinal mass abutting the heart; pectus excavatum, which\ncompresses and displaces it; and adjacent consolidation or effusion merging with\nthe cardiac border through the silhouette effect. Before calling cardiomegaly,\ncheck the projection, the inspiration, and whether the border you are measuring\nis actually heart.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/airspace-and-cardiac.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/airspace-and-cardiac.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -133,7 +133,7 @@
       "title": "Nodule, mass, and why the size threshold matters",
       "text": "A pulmonary nodule is a rounded opacity up to 30 mm in diameter surrounded by\naerated lung. Above 30 mm the same lesion is called a mass, and the distinction\nis not pedantry: the larger the lesion, the higher the probability it is\nmalignant, and masses are investigated on that basis. Both are discrete and\nhave definable margins, which separates them from consolidation, whose edges\nfade into surrounding lung and which follows lobar anatomy rather than forming\na ball.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -150,7 +150,7 @@
       "title": "Margins and what they suggest",
       "text": "A smooth, well-circumscribed margin is more often benign — a granuloma, a\nhamartoma, a cyst. Spiculated or irregular margins, with strands radiating into\nthe surrounding lung, raise suspicion of malignancy. Lobulated contours sit in\nbetween and suggest uneven growth. Margin analysis on a plain film is a weak\ndiscriminator on its own and is not a substitute for CT, so it should inform how\nurgently a lesion is worked up rather than whether it is worked up at all.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -167,7 +167,7 @@
       "title": "Calcification patterns",
       "text": "Calcification within a nodule is reassuring only when its pattern is one of the\nbenign ones: diffuse and dense, central, laminated or concentric, or the\n\"popcorn\" pattern of a hamartoma. Stippled, eccentric or amorphous calcification\ndoes not exclude malignancy, since a tumour can engulf a pre-existing\ngranuloma. Plain radiographs detect calcification poorly, so its apparent\nabsence on a chest film means very little.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -184,7 +184,7 @@
       "title": "Nodule mimics outside the lung",
       "text": "Several things project over the lungs and imitate a nodule: nipple shadows,\nwhich are usually bilateral, symmetrical and at the same level in the lower\nzones; skin lesions such as moles and seborrhoeic keratoses, which have\nsharp margins because they are outlined by air; healing or old rib fractures\nand bone islands; and vessels seen end-on, which can be traced into a branching\nvessel on careful inspection. Before reporting a solitary nodule, check whether\nthe opacity is truly intrapulmonary.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -202,7 +202,7 @@
       "title": "A systematic approach to the frontal chest film",
       "text": "Read the same way every time so that findings are not missed through\ninattention. Confirm the patient, the date and the projection. Assess technical\nadequacy: rotation, inspiration, penetration. Then work through airway,\nbreathing (lung fields zone by zone, comparing left with right), circulation\n(heart size and contour, mediastinum, hila), diaphragm and costophrenic angles,\nand everything else — bones, soft tissues, lines and tubes. Review areas that\nare commonly missed last: apices, behind the heart, below the diaphragm, and the\nperiphery.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -222,7 +222,7 @@
       "title": "Assessing technical adequacy first",
       "text": "Rotation is judged by the medial ends of the clavicles relative to the spinous\nprocesses; rotation distorts the mediastinal contour and can create apparent\ncardiomegaly or a false hilar abnormality. Adequate inspiration puts the\ndiaphragm at about the level of the tenth posterior rib or the sixth anterior\nrib; a shallow inspiration crowds the lung bases and widens the heart. Correct\npenetration allows the lower thoracic vertebrae to be seen faintly through the\nheart. Stating the projection and adequacy before describing findings prevents\nmost projection-related errors.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -241,7 +241,7 @@
       "title": "Commonly missed review areas",
       "text": "A large proportion of missed findings on chest radiographs lie in a small number\nof places: the lung apices, obscured by clavicles and ribs; the retrocardiac\nregion, where a left lower lobe lesion hides behind the heart; the area below\nthe diaphragmatic domes; the periphery just inside the chest wall, where a\nsmall pneumothorax or a peripheral nodule sits; and the bones and soft tissues,\nwhich are easy to skip once a lung abnormality has been found. Satisfaction of\nsearch — stopping after the first abnormality — is the single commonest reason a\nsecond finding is missed.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/nodules-and-approach.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/nodules-and-approach.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -258,7 +258,7 @@
       "title": "Costophrenic angle blunting",
       "text": "On an erect PA chest radiograph, free pleural fluid collects in the most\ndependent part of the pleural space, which is the costophrenic recess. The\nnormally sharp, acute angle where the diaphragm meets the chest wall becomes\nshallow and then disappears. Loss of that crisp angle is usually the earliest\nsign visible on a frontal film. Roughly 200 ml of fluid is needed before the\nlateral costophrenic angle blunts on a PA view; the posterior recess is deeper,\nso a lateral film shows smaller volumes, from about 50 ml. A sharp costophrenic\nangle on an erect film therefore argues against a large effusion, but does not\nexclude a small one.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -275,7 +275,7 @@
       "title": "The meniscus sign",
       "text": "Free pleural fluid has a concave upper border that rises higher laterally than\nmedially, giving a curved meniscus rather than a flat line. This is a surface\ntension effect at the fluid–lung interface, not a fluid level. A genuine\nhorizontal fluid level on an erect film implies gas in the pleural space as well\nas fluid, which points to a hydropneumothorax, a bronchopleural fistula or\nrecent intervention. The meniscus is the sign that most reliably separates\npleural fluid from lung consolidation at the base: consolidation opacifies the\nlung but leaves the lateral angle and the fluid contour absent.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -293,7 +293,7 @@
       "title": "Distinguishing effusion from basal consolidation",
       "text": "Both produce a dense lower zone on a frontal film, and mistaking one for the\nother is among the commonest errors at this level. Consolidation tends to have\nan ill-defined upper margin, often contains air bronchograms, and follows lobar\nanatomy with a boundary at a fissure. An effusion has a smooth concave meniscus,\nno air bronchograms, and blunts the costophrenic angle. Effusions may shift with\nposition; consolidation does not. The two coexist frequently in pneumonia, so\nfinding one does not rule out the other, and describing which features are\npresent is more useful than asserting a single label.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -312,7 +312,7 @@
       "title": "Subpulmonic effusion",
       "text": "Fluid can collect between the lung base and the diaphragm without spilling into\nthe costophrenic recess, so the costophrenic angle stays sharp and the film can\nbe read as normal. Clues are an apparently raised hemidiaphragm, a diaphragmatic\ndome whose highest point sits more laterally than usual, and a widened gap\nbetween the gastric air bubble and the apparent left diaphragm. It is the\nclassic reason a moderate effusion is missed on an erect film. A lateral\ndecubitus view, or ultrasound, settles it.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -329,7 +329,7 @@
       "title": "Pleural fluid on a supine film",
       "text": "On a supine or semi-erect film, which is what most portable AP radiographs are,\nfluid layers posteriorly rather than pooling at the base. The result is a\ngeneralised veil-like increase in density over the affected hemithorax, through\nwhich lung markings remain visible, often with a hazy apical cap. The\ncostophrenic angle may look normal. Because density increases gradually rather\nthan forming an edge, a substantial effusion can be overlooked entirely or\nmistaken for underexposure. Always check the projection before concluding a\nsupine film shows no effusion.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -347,7 +347,7 @@
       "title": "The visceral pleural line",
       "text": "A pneumothorax is diagnosed on a frontal film by identifying the visceral\npleural line: a thin, sharply defined white line running roughly parallel to the\nchest wall, with lung markings visible on its inner side and absent beyond it.\nThe absence of vascular markings peripheral to that line is the confirming\nfeature, not the primary one — hypovascular lung and overexposure can both mimic\nit. On an erect film, air rises, so the line is usually sought first at the apex\nand along the lateral chest wall.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -364,7 +364,7 @@
       "title": "The deep sulcus sign",
       "text": "On a supine film, pleural air collects anteriorly and basally rather than at the\napex, so the classic apical pleural line may be absent altogether. Instead the\naffected costophrenic sulcus appears abnormally deep, lucent and sharply\ndefined, extending further inferiorly than the opposite side. The ipsilateral\nhemidiaphragm may look depressed and the adjacent heart border unusually crisp.\nBecause supine and portable films are exactly the circumstances in which a\npneumothorax matters most, this sign is worth looking for specifically on any AP\nfilm.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -381,7 +381,7 @@
       "title": "Skin folds and other pneumothorax mimics",
       "text": "A skin fold produces an edge that can be mistaken for a pleural line, but it is\na broad band with a gradual density transition rather than a fine white line,\nit often extends beyond the chest wall, and lung markings can usually be traced\nacross it. Clothing, tubing, bedding and the scapular edge do the same. The\ndecisive test is whether vascular markings genuinely stop at the line: if\nvessels cross it, it is not a pneumothorax. Calling a skin fold a pneumothorax\nrisks an unnecessary chest drain, so the threshold for this diagnosis on a\nportable film should be the presence of both features, not one.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -398,7 +398,7 @@
       "title": "Tension pneumothorax",
       "text": "Tension physiology is suggested radiographically by mediastinal shift away from\nthe affected side, depression or inversion of the ipsilateral hemidiaphragm, and\nsplaying of the ribs. It is a clinical diagnosis and treatment should not wait\nfor a film. The imaging point for a student is that a large pneumothorax with\ncontralateral mediastinal shift is an emergency finding rather than a\ndescriptive one, and should be reported as such immediately.",
       "source": "Chest X-ray Training Companion — authored teaching note",
-      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/main/data/corpus/pleura.md",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/pleura.md",
       "licence": "CC BY-NC-SA 3.0",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "retrieved_on": "2026-09-12",
@@ -407,11 +407,133 @@
       ],
       "confusions": [],
       "aspect": "management"
+    },
+    {
+      "id": "who-external-artefact-mimics",
+      "title": "External artefacts that mimic disease",
+      "text": "Not every opacity is anatomy. Clothing, jewellery, ECG electrodes and their wires, and braided hair all project over the lung fields and can imitate nodules, lines or even a pneumothorax edge. The clues are external: unnaturally straight edges or perfect circles, a density that continues beyond the chest wall onto the soft tissues or the background, and symmetry that follows clothing rather than anatomy. Before reporting a solitary opacity, check whether it respects anatomical boundaries. Removing the object and re-imaging settles the doubt faster than any further interpretation.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "nodule_or_mass",
+        "no_finding"
+      ],
+      "confusions": [
+        "nodule_or_mass"
+      ],
+      "aspect": "pitfall"
+    },
+    {
+      "id": "who-empyema-vs-simple-effusion",
+      "title": "Empyema versus a simple effusion",
+      "text": "An empyema is infected fluid occupying the pleural space, and on a frontal film it looks much like any other effusion: dependent opacity, meniscus, blunted angle. Features favouring empyema include loculation with a lentiform (lens-shaped) collection, visible pleural thickening, and adjacent consolidation from underlying pneumonia. The split-pleura sign is a CT finding, not a plain-film one. Because the film alone rarely separates them, the correct student report describes the fluid and its distribution, and notes that clinical context — fever, raised inflammatory markers, recent pneumonia — determines the next step, not the radiograph.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "pleural_effusion"
+      ],
+      "confusions": [
+        "consolidation"
+      ],
+      "aspect": "differential"
+    },
+    {
+      "id": "who-haemothorax-after-trauma",
+      "title": "Haemothorax after trauma",
+      "text": "Blood in the pleural space behaves radiographically like any pleural fluid: a meniscus on the erect film or a veil of generalised density on the supine film. What points to haemothorax rather than a medical effusion is context, not appearance — recent trauma, fractured ribs, a chest drain already in situ, or associated contusion. A rapidly enlarging opacity after injury suggests ongoing bleeding and is urgent. Describe the fluid accurately, pair it with the history, and state plainly when the film alone cannot distinguish blood from other fluid.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "pleural_effusion"
+      ],
+      "confusions": [
+        "no_finding"
+      ],
+      "aspect": "differential"
+    },
+    {
+      "id": "who-lvf-interstitial-oedema",
+      "title": "Interstitial oedema in left heart failure",
+      "text": "In left heart failure the lungs show the backlog before the heart looks dramatically enlarged. Early signs are interstitial: fine septal (Kerley B) lines at the bases, peribronchial cuffing, and upper-lobe vascular prominence. As oedema worsens it becomes perihilar \"bat-wing\" consolidation that characteristically spares the lung periphery — the reverse of most pneumonias. An enlarged cardiac silhouette with small bilateral effusions alongside these lung changes strongly favours oedema over infection. Describe the distribution first; it is what separates cardiac from infective consolidation.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "cardiomegaly",
+        "consolidation"
+      ],
+      "confusions": [
+        "consolidation"
+      ],
+      "aspect": "radiographic_sign"
+    },
+    {
+      "id": "who-lvf-upper-lobe-diversion",
+      "title": "Upper-lobe blood diversion",
+      "text": "On a normal erect film the lower-lobe vessels are more prominent than the upper-lobe vessels because of gravity. In early left heart failure this gradient reverses: the upper-lobe vessels become as conspicuous as the lower ones, termed cephalisation or blood diversion. It precedes interstitial oedema and frank consolidation, so it is the earliest plain-film clue to raised left atrial pressure. The sign is only valid on an erect inspiratory film — supine positioning redistributes blood to the apices physiologically and produces the same appearance in a normal patient.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "cardiomegaly"
+      ],
+      "confusions": [
+        "no_finding"
+      ],
+      "aspect": "radiographic_sign"
+    },
+    {
+      "id": "who-solitary-nodule-workup",
+      "title": "The solitary pulmonary nodule: what the plain film owes",
+      "text": "A solitary pulmonary nodule on CXR is a finding, not a diagnosis. The plain-film report should record size (nodule up to 30 mm, mass above), location, margins and any visible calcification, then stop: characterisation belongs to CT. The single most useful step is comparison with old films — stability over two years strongly favours benignity, while growth demands workup. Multiple nodules shift thinking toward metastases, granulomas or vascular causes. A student who detects the lesion, describes it completely and states what comparison is needed has done the whole plain-film job.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "nodule_or_mass"
+      ],
+      "confusions": [
+        "consolidation"
+      ],
+      "aspect": "differential"
+    },
+    {
+      "id": "who-lobar-pneumonia-fissure",
+      "title": "Lobar pneumonia and the fissure boundary",
+      "text": "Bacterial lobar pneumonia fills an entire lobe with inflammatory exudate, producing homogeneous opacity bounded sharply where the lobe meets a fissure — a straight edge that effusions and most masses do not show. Air bronchograms within the opacity confirm an alveolar process, and crucially there is no volume loss: the fissures stay in place and the mediastinum does not shift. The silhouette sign then names the lobe. A parapneumonic effusion often accompanies lobar pneumonia, so look for a meniscus alongside the consolidation rather than forcing a single label.",
+      "source": "Chest X-ray Training Companion — authored teaching note",
+      "url": "https://github.com/MinuraWije/Chest-X-ray-Training-Companion/blob/master/data/corpus/who-aligned-notes.md",
+      "licence": "CC BY-NC-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+      "retrieved_on": "2026-09-12",
+      "findings": [
+        "consolidation"
+      ],
+      "confusions": [
+        "pleural_effusion"
+      ],
+      "aspect": "radiographic_sign"
     }
   ],
   "source_sha256": {
-    "airspace-and-cardiac.md": "e50e280e0eb33e754ff0c79b85e6d4a71f1759832e8dfe5c54fad63724c7abf4",
-    "nodules-and-approach.md": "e9a6024ccbcf308467494667ba955858a0dc96f265735ff2c8c087c5a8a7281c",
-    "pleura.md": "dfba76d3dddf0e8c6548576d8bfb260285d73aceb1ae9678dd34624348bc6422"
+    "airspace-and-cardiac.md": "ea8e2f72823963f3e3f0061301d6902abcf3b21d458f320858e8ce7467e7e23c",
+    "nodules-and-approach.md": "df3748d953be14c2701f36b5fb22471dcfc8deb655c0762e2442698f89817a69",
+    "pleura.md": "31d03371a63f26fc1c077534c223309437810887fd84c767fd08e08bffb6c01b",
+    "who-aligned-notes.md": "417d2cdbdad2928dd6133ed141e00021e20ec0291ffc69d220ed34a263159fb9"
   }
 }
