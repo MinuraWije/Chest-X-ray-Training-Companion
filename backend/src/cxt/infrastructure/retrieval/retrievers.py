@@ -63,6 +63,8 @@ def _to_passage(chunk: CorpusChunk, score: float) -> RetrievedPassage:
         score=score,
         id=chunk.id,
         url=chunk.url,
+        read_more_url=chunk.read_more_url,
+        read_more_label=chunk.read_more_label,
     )
 
 

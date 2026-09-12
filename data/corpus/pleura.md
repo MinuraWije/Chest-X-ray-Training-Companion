@@ -13,6 +13,8 @@ id: pleura-effusion-costophrenic
 findings: [pleural_effusion]
 confusions: [consolidation]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/pleural-effusion"
+read_more_label: "Radiopaedia: Pleural effusion"
 ```
 
 On an erect PA chest radiograph, free pleural fluid collects in the most
@@ -32,6 +34,8 @@ id: pleura-effusion-meniscus
 findings: [pleural_effusion]
 confusions: [consolidation, nodule_or_mass]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/pleural-effusion"
+read_more_label: "Radiopaedia: Pleural effusion"
 ```
 
 Free pleural fluid has a concave upper border that rises higher laterally than
@@ -50,6 +54,8 @@ id: pleura-effusion-vs-consolidation
 findings: [pleural_effusion, consolidation]
 confusions: [consolidation, pleural_effusion]
 aspect: differential
+read_more_url: "https://radiopaedia.org/articles/pleural-effusion"
+read_more_label: "Radiopaedia: Pleural effusion"
 ```
 
 Both produce a dense lower zone on a frontal film, and mistaking one for the
@@ -68,6 +74,8 @@ id: pleura-effusion-subpulmonic
 findings: [pleural_effusion]
 confusions: [no_finding]
 aspect: pitfall
+read_more_url: "https://radiopaedia.org/articles/pleural-effusion"
+read_more_label: "Radiopaedia: Pleural effusion"
 ```
 
 Fluid can collect between the lung base and the diaphragm without spilling into
@@ -85,6 +93,8 @@ id: pleura-effusion-supine
 findings: [pleural_effusion]
 confusions: [no_finding, consolidation]
 aspect: pitfall
+read_more_url: "https://radiopaedia.org/articles/pleural-effusion"
+read_more_label: "Radiopaedia: Pleural effusion"
 ```
 
 On a supine or semi-erect film, which is what most portable AP radiographs are,
@@ -103,6 +113,8 @@ id: pleura-pneumothorax-line
 findings: [pneumothorax]
 confusions: [no_finding]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/pneumothorax"
+read_more_label: "Radiopaedia: Pneumothorax"
 ```
 
 A pneumothorax is diagnosed on a frontal film by identifying the visceral
@@ -120,6 +132,8 @@ id: pleura-pneumothorax-deep-sulcus
 findings: [pneumothorax]
 confusions: [no_finding]
 aspect: pitfall
+read_more_url: "https://radiopaedia.org/articles/pneumothorax"
+read_more_label: "Radiopaedia: Pneumothorax"
 ```
 
 On a supine film, pleural air collects anteriorly and basally rather than at the
@@ -138,6 +152,8 @@ id: pleura-pneumothorax-mimics
 findings: [pneumothorax]
 confusions: [pneumothorax]
 aspect: pitfall
+read_more_url: "https://radiopaedia.org/articles/pneumothorax"
+read_more_label: "Radiopaedia: Pneumothorax"
 ```
 
 A skin fold produces an edge that can be mistaken for a pleural line, but it is
@@ -156,6 +172,8 @@ id: pleura-pneumothorax-tension
 findings: [pneumothorax]
 confusions: []
 aspect: management
+read_more_url: "https://radiopaedia.org/articles/tension-pneumothorax"
+read_more_label: "Radiopaedia: Tension pneumothorax"
 ```
 
 Tension physiology is suggested radiographically by mediastinal shift away from

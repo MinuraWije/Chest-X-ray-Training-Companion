@@ -41,6 +41,13 @@ export interface RetrievedPassage {
    * students as a percentage — see `SourceList` in FeedbackSection.tsx.
    */
   score: number;
+  /**
+   * Curated student-facing "Learn more" link (verified teaching article).
+   * Empty when no verified link exists for the chunk — the UI hides the
+   * link instead of pointing anywhere unverified.
+   */
+  readMoreUrl: string;
+  readMoreLabel: string;
 }
 
 export interface FeedbackSection {

@@ -52,6 +52,8 @@ def shape_passage(passage: Any) -> dict[str, object]:
         "url": passage.url,
         "text": passage.text,
         "score": float(passage.score),
+        "readMoreUrl": passage.read_more_url,
+        "readMoreLabel": passage.read_more_label,
     }
 
 

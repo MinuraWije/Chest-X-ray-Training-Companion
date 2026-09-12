@@ -18,7 +18,9 @@
         "pleural_effusion",
         "nodule_or_mass"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/air-bronchogram",
+      "read_more_label": "Radiopaedia: Air bronchogram"
     },
     {
       "id": "airspace-silhouette-sign",
@@ -36,7 +38,9 @@
         "pleural_effusion",
         "cardiomegaly"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/silhouette-sign-x-ray",
+      "read_more_label": "Radiopaedia: Silhouette sign"
     },
     {
       "id": "airspace-consolidation-differential",
@@ -54,7 +58,9 @@
         "nodule_or_mass",
         "pleural_effusion"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/consolidation",
+      "read_more_label": "Radiopaedia: Consolidation"
     },
     {
       "id": "airspace-consolidation-vs-collapse",
@@ -72,7 +78,9 @@
         "consolidation",
         "pneumothorax"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/atelectasis-vs-consolidation",
+      "read_more_label": "Radiopaedia: Atelectasis vs consolidation"
     },
     {
       "id": "cardiac-ctr-measurement",
@@ -90,7 +98,9 @@
         "pleural_effusion",
         "consolidation"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/cardiothoracic-ratio",
+      "read_more_label": "Radiopaedia: Cardiothoracic ratio"
     },
     {
       "id": "cardiac-ap-projection-pitfall",
@@ -107,7 +117,9 @@
       "confusions": [
         "cardiomegaly"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "https://radiopaedia.org/articles/cardiothoracic-ratio",
+      "read_more_label": "Radiopaedia: Cardiothoracic ratio"
     },
     {
       "id": "cardiac-mimics",
@@ -126,7 +138,9 @@
         "pleural_effusion",
         "consolidation"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "nodule-definitions",
@@ -143,7 +157,9 @@
       "confusions": [
         "consolidation"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1",
+      "read_more_label": "Radiopaedia: Solitary pulmonary nodule"
     },
     {
       "id": "nodule-margins",
@@ -160,7 +176,9 @@
       "confusions": [
         "nodule_or_mass"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1",
+      "read_more_label": "Radiopaedia: Solitary pulmonary nodule"
     },
     {
       "id": "nodule-calcification",
@@ -177,7 +195,9 @@
       "confusions": [
         "nodule_or_mass"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1",
+      "read_more_label": "Radiopaedia: Solitary pulmonary nodule"
     },
     {
       "id": "nodule-mimics",
@@ -195,7 +215,9 @@
       "confusions": [
         "nodule_or_mass"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "approach-systematic-review",
@@ -215,7 +237,9 @@
         "nodule_or_mass"
       ],
       "confusions": [],
-      "aspect": "technique"
+      "aspect": "technique",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "approach-technical-adequacy",
@@ -234,7 +258,9 @@
         "cardiomegaly",
         "pleural_effusion"
       ],
-      "aspect": "technique"
+      "aspect": "technique",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "approach-review-areas",
@@ -251,7 +277,9 @@
         "nodule_or_mass"
       ],
       "confusions": [],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "pleura-effusion-costophrenic",
@@ -268,7 +296,9 @@
       "confusions": [
         "consolidation"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/pleural-effusion",
+      "read_more_label": "Radiopaedia: Pleural effusion"
     },
     {
       "id": "pleura-effusion-meniscus",
@@ -286,7 +316,9 @@
         "consolidation",
         "nodule_or_mass"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/pleural-effusion",
+      "read_more_label": "Radiopaedia: Pleural effusion"
     },
     {
       "id": "pleura-effusion-vs-consolidation",
@@ -305,7 +337,9 @@
         "consolidation",
         "pleural_effusion"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/pleural-effusion",
+      "read_more_label": "Radiopaedia: Pleural effusion"
     },
     {
       "id": "pleura-effusion-subpulmonic",
@@ -322,7 +356,9 @@
       "confusions": [
         "no_finding"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "https://radiopaedia.org/articles/pleural-effusion",
+      "read_more_label": "Radiopaedia: Pleural effusion"
     },
     {
       "id": "pleura-effusion-supine",
@@ -340,7 +376,9 @@
         "no_finding",
         "consolidation"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "https://radiopaedia.org/articles/pleural-effusion",
+      "read_more_label": "Radiopaedia: Pleural effusion"
     },
     {
       "id": "pleura-pneumothorax-line",
@@ -357,7 +395,9 @@
       "confusions": [
         "no_finding"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/pneumothorax",
+      "read_more_label": "Radiopaedia: Pneumothorax"
     },
     {
       "id": "pleura-pneumothorax-deep-sulcus",
@@ -374,7 +414,9 @@
       "confusions": [
         "no_finding"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "https://radiopaedia.org/articles/pneumothorax",
+      "read_more_label": "Radiopaedia: Pneumothorax"
     },
     {
       "id": "pleura-pneumothorax-mimics",
@@ -391,7 +433,9 @@
       "confusions": [
         "pneumothorax"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "https://radiopaedia.org/articles/pneumothorax",
+      "read_more_label": "Radiopaedia: Pneumothorax"
     },
     {
       "id": "pleura-pneumothorax-tension",
@@ -406,7 +450,9 @@
         "pneumothorax"
       ],
       "confusions": [],
-      "aspect": "management"
+      "aspect": "management",
+      "read_more_url": "https://radiopaedia.org/articles/tension-pneumothorax",
+      "read_more_label": "Radiopaedia: Tension pneumothorax"
     },
     {
       "id": "who-external-artefact-mimics",
@@ -424,7 +470,9 @@
       "confusions": [
         "nodule_or_mass"
       ],
-      "aspect": "pitfall"
+      "aspect": "pitfall",
+      "read_more_url": "",
+      "read_more_label": ""
     },
     {
       "id": "who-empyema-vs-simple-effusion",
@@ -441,7 +489,9 @@
       "confusions": [
         "consolidation"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/empyema-vs-pleural-effusion-2",
+      "read_more_label": "Radiopaedia: Empyema vs pleural effusion"
     },
     {
       "id": "who-haemothorax-after-trauma",
@@ -458,7 +508,9 @@
       "confusions": [
         "no_finding"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/hemothorax-1",
+      "read_more_label": "Radiopaedia: Haemothorax"
     },
     {
       "id": "who-lvf-interstitial-oedema",
@@ -476,7 +528,9 @@
       "confusions": [
         "consolidation"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/pulmonary-oedema",
+      "read_more_label": "Radiopaedia: Pulmonary oedema"
     },
     {
       "id": "who-lvf-upper-lobe-diversion",
@@ -493,7 +547,9 @@
       "confusions": [
         "no_finding"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/pulmonary-oedema",
+      "read_more_label": "Radiopaedia: Pulmonary oedema"
     },
     {
       "id": "who-solitary-nodule-workup",
@@ -510,7 +566,9 @@
       "confusions": [
         "consolidation"
       ],
-      "aspect": "differential"
+      "aspect": "differential",
+      "read_more_url": "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1",
+      "read_more_label": "Radiopaedia: Solitary pulmonary nodule"
     },
     {
       "id": "who-lobar-pneumonia-fissure",
@@ -527,13 +585,15 @@
       "confusions": [
         "pleural_effusion"
       ],
-      "aspect": "radiographic_sign"
+      "aspect": "radiographic_sign",
+      "read_more_url": "https://radiopaedia.org/articles/consolidation",
+      "read_more_label": "Radiopaedia: Consolidation"
     }
   ],
   "source_sha256": {
-    "airspace-and-cardiac.md": "ea8e2f72823963f3e3f0061301d6902abcf3b21d458f320858e8ce7467e7e23c",
-    "nodules-and-approach.md": "df3748d953be14c2701f36b5fb22471dcfc8deb655c0762e2442698f89817a69",
-    "pleura.md": "31d03371a63f26fc1c077534c223309437810887fd84c767fd08e08bffb6c01b",
-    "who-aligned-notes.md": "417d2cdbdad2928dd6133ed141e00021e20ec0291ffc69d220ed34a263159fb9"
+    "airspace-and-cardiac.md": "97495bb80394c93ca37c05943e8966735b1342f56a63a121a4283f9e5b55d510",
+    "nodules-and-approach.md": "f73f68e6d0fb3dfae9bcd87bd010a7de8394c7aab2261ac6587494c2a005f682",
+    "pleura.md": "68bd005a9f9f72f00b97064b7a8d6366938d2abbba52d97329b182ec931d9d04",
+    "who-aligned-notes.md": "7415051e0e9e270b2f71f4f73fd655f44bb3a84cb2c6fb1cb4c1cace21005a30"
   }
 }

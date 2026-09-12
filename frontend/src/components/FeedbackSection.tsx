@@ -67,7 +67,13 @@ export function FeedbackSection({ feedback }: FeedbackViewProps): ReactNode {
 }
 
 /**
- * The evidence panel.
+ * The evidence panel — an in-app reading card per passage.
+ *
+ * Students stay in the app: each passage renders its own title and plain
+ * teaching text, so nobody has to make sense of a raw corpus file that holds
+ * many chunks plus build metadata. The repository URL is provenance for the
+ * evaluation, not a reading destination, so it is deliberately not linked
+ * from the student view.
  *
  * No score is shown. A percentage next to a citation implies a reliability the
  * number does not carry — BM25 rank is not a probability that the passage is
@@ -78,6 +84,8 @@ export function FeedbackSection({ feedback }: FeedbackViewProps): ReactNode {
  *
  * Passages are collapsed by default: a corpus chunk runs to 700 characters and
  * three of them would bury the teaching point they are meant to support.
+ * A curated "Learn more" link is shown only when the chunk carries a verified
+ * teaching article (`readMoreUrl`); otherwise no link is rendered at all.
  */
 function SourceList({ sources }: { sources: RetrievedPassage[] }): ReactNode {
   return (
@@ -86,7 +94,7 @@ function SourceList({ sources }: { sources: RetrievedPassage[] }): ReactNode {
         Reference passages
       </h3>
       <p className="mt-1 text-xs text-slate-500">
-        Published teaching text supplied to the model. These describe findings in
+        Teaching notes supplied to the model. These describe findings in
         general and were not written about this patient.
       </p>
       <ul className="mt-2 space-y-2 text-xs text-slate-600">
@@ -94,25 +102,28 @@ function SourceList({ sources }: { sources: RetrievedPassage[] }): ReactNode {
           // Keyed on the chunk id, not `source`: one document yields many
           // chunks sharing a source string, which produced duplicate keys.
           <li key={s.id || `passage-${index}`}>
-            <details className="group">
+            <details className="group rounded-md border border-slate-200 bg-slate-50 p-2">
               <summary className="cursor-pointer list-none font-medium text-slate-700 hover:text-brand-700">
                 <span className="mr-1 tabular-nums text-slate-400">
                   [S{index + 1}]
                 </span>
                 {s.source}
-                <span className="ml-1 text-slate-400 group-open:hidden">
-                  — show evidence
+                <span className="ml-1 font-normal text-slate-400 group-open:hidden">
+                  — read
                 </span>
               </summary>
               <p className="mt-1 whitespace-pre-wrap pl-6 text-slate-600">{s.text}</p>
-              {s.url && (
+              <p className="mt-1 pl-6 text-[11px] text-slate-400">
+                Teaching note · CC BY-NC-SA 3.0
+              </p>
+              {s.readMoreUrl && (
                 <a
                   className="mt-1 inline-block pl-6 text-brand-700 underline hover:text-brand-800"
-                  href={s.url}
+                  href={s.readMoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View source
+                  Learn more{s.readMoreLabel ? `: ${s.readMoreLabel}` : ""}
                 </a>
               )}
             </details>

@@ -44,6 +44,11 @@ class RetrievedPassage:
     score: float = 1.0
     id: str = ""
     url: str = ""
+    # Curated student-facing "Learn more" link. Empty when no verified link
+    # exists for the chunk — the frontend hides the link rather than showing
+    # a dead or guessed URL. Defaults keep pre-Phase-2 rows deserializing.
+    read_more_url: str = ""
+    read_more_label: str = ""
 
     def __post_init__(self) -> None:
         if not isinstance(self.text, str) or not self.text.strip():
@@ -56,6 +61,18 @@ class RetrievedPassage:
             raise ValidationError("RetrievedPassage.id must be a string.")
         if not isinstance(self.url, str):
             raise ValidationError("RetrievedPassage.url must be a string.")
+        if not isinstance(self.read_more_url, str):
+            raise ValidationError("RetrievedPassage.read_more_url must be a string.")
+        if not isinstance(self.read_more_label, str):
+            raise ValidationError("RetrievedPassage.read_more_label must be a string.")
+        if self.read_more_url and not self.read_more_url.startswith("https://"):
+            raise ValidationError(
+                "RetrievedPassage.read_more_url must be an https:// URL."
+            )
+        if self.read_more_url and not self.read_more_label.strip():
+            raise ValidationError(
+                "RetrievedPassage.read_more_label is required when read_more_url is set."
+            )
 
 
 @dataclass(frozen=True, slots=True)

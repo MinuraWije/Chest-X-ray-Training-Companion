@@ -13,6 +13,8 @@ id: airspace-air-bronchogram
 findings: [consolidation]
 confusions: [pleural_effusion, nodule_or_mass]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/air-bronchogram"
+read_more_label: "Radiopaedia: Air bronchogram"
 ```
 
 An air bronchogram is a branching, air-filled bronchus made visible because the
@@ -30,6 +32,8 @@ id: airspace-silhouette-sign
 findings: [consolidation]
 confusions: [pleural_effusion, cardiomegaly]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/silhouette-sign-x-ray"
+read_more_label: "Radiopaedia: Silhouette sign"
 ```
 
 Two structures of similar density in direct anatomical contact lose the border
@@ -47,6 +51,8 @@ id: airspace-consolidation-differential
 findings: [consolidation]
 confusions: [nodule_or_mass, pleural_effusion]
 aspect: differential
+read_more_url: "https://radiopaedia.org/articles/consolidation"
+read_more_label: "Radiopaedia: Consolidation"
 ```
 
 Consolidation is a description of alveolar filling, not a diagnosis. Pneumonia
@@ -64,6 +70,8 @@ id: airspace-consolidation-vs-collapse
 findings: [consolidation]
 confusions: [consolidation, pneumothorax]
 aspect: differential
+read_more_url: "https://radiopaedia.org/articles/atelectasis-vs-consolidation"
+read_more_label: "Radiopaedia: Atelectasis vs consolidation"
 ```
 
 Both produce increased density. Consolidation fills the lung but preserves its
@@ -80,6 +88,8 @@ id: cardiac-ctr-measurement
 findings: [cardiomegaly]
 confusions: [pleural_effusion, consolidation]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/cardiothoracic-ratio"
+read_more_label: "Radiopaedia: Cardiothoracic ratio"
 ```
 
 The cardiothoracic ratio is the maximum transverse cardiac diameter divided by
@@ -96,6 +106,8 @@ id: cardiac-ap-projection-pitfall
 findings: [cardiomegaly]
 confusions: [cardiomegaly]
 aspect: pitfall
+read_more_url: "https://radiopaedia.org/articles/cardiothoracic-ratio"
+read_more_label: "Radiopaedia: Cardiothoracic ratio"
 ```
 
 On a PA film the heart lies close to the detector and is projected near its true

@@ -469,7 +469,15 @@ def _shuffled_control(
         return ()
     picked = [pool[(offset + i) % len(pool)] for i in range(len(passages))]
     return tuple(
-        RetrievedPassage(text=c.text, source=c.source, score=0.0, id=c.id, url=c.url)
+        RetrievedPassage(
+            text=c.text,
+            source=c.source,
+            score=0.0,
+            id=c.id,
+            url=c.url,
+            read_more_url=c.read_more_url,
+            read_more_label=c.read_more_label,
+        )
         for c in picked
     )
 

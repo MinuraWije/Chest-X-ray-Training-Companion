@@ -13,6 +13,8 @@ id: nodule-definitions
 findings: [nodule_or_mass]
 confusions: [consolidation]
 aspect: radiographic_sign
+read_more_url: "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1"
+read_more_label: "Radiopaedia: Solitary pulmonary nodule"
 ```
 
 A pulmonary nodule is a rounded opacity up to 30 mm in diameter surrounded by
@@ -30,6 +32,8 @@ id: nodule-margins
 findings: [nodule_or_mass]
 confusions: [nodule_or_mass]
 aspect: differential
+read_more_url: "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1"
+read_more_label: "Radiopaedia: Solitary pulmonary nodule"
 ```
 
 A smooth, well-circumscribed margin is more often benign — a granuloma, a
@@ -46,6 +50,8 @@ id: nodule-calcification
 findings: [nodule_or_mass]
 confusions: [nodule_or_mass]
 aspect: differential
+read_more_url: "https://radiopaedia.org/articles/solitary-pulmonary-nodule-1"
+read_more_label: "Radiopaedia: Solitary pulmonary nodule"
 ```
 
 Calcification within a nodule is reassuring only when its pattern is one of the

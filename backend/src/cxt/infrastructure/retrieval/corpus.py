@@ -108,6 +108,11 @@ class CorpusChunk:
     findings: tuple[str, ...]
     aspect: str
     confusions: tuple[str, ...] = field(default_factory=tuple)
+    # Optional curated student-facing link ("Learn more"). Absent by default;
+    # the frontend hides the link when empty rather than linking anywhere
+    # unverified. Validated as https:// + labelled when present.
+    read_more_url: str = ""
+    read_more_label: str = ""
 
     def __post_init__(self) -> None:
         if not self.id.strip():
@@ -144,6 +149,17 @@ class CorpusChunk:
             raise ValidationError(
                 f"Chunk {self.id!r} has retrieved_on={self.retrieved_on!r}; expected YYYY-MM-DD."
             )
+        if self.read_more_url and not self.read_more_url.startswith("https://"):
+            raise ValidationError(
+                f"Chunk {self.id!r} has read_more_url={self.read_more_url!r}; "
+                "expected an https:// URL (verified to resolve at curation time)."
+            )
+        if self.read_more_url and not self.read_more_label.strip():
+            raise ValidationError(
+                f"Chunk {self.id!r} sets read_more_url but no read_more_label."
+            )
+        if len(self.read_more_url) > 300:
+            raise ValidationError(f"Chunk {self.id!r} has an overlong read_more_url.")
 
     @property
     def search_text(self) -> str:
@@ -167,6 +183,8 @@ class CorpusChunk:
             "findings": list(self.findings),
             "confusions": list(self.confusions),
             "aspect": self.aspect,
+            "read_more_url": self.read_more_url,
+            "read_more_label": self.read_more_label,
         }
 
     @classmethod
@@ -183,6 +201,8 @@ class CorpusChunk:
             findings=tuple(payload.get("findings", ())),
             confusions=tuple(payload.get("confusions", ())),
             aspect=str(payload["aspect"]),
+            read_more_url=str(payload.get("read_more_url", "")),
+            read_more_label=str(payload.get("read_more_label", "")),
         )
 
 
@@ -285,6 +305,8 @@ def parse_corpus_file(path: Path) -> list[CorpusChunk]:
                 findings=tuple(str(f) for f in meta.get("findings", ())),
                 confusions=tuple(str(f) for f in meta.get("confusions", ())),
                 aspect=str(meta["aspect"]),
+                read_more_url=str(meta.get("read_more_url", "")),
+                read_more_label=str(meta.get("read_more_label", "")),
             )
         )
     return chunks
