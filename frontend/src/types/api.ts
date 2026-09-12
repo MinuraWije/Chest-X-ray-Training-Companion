@@ -28,8 +28,18 @@ export interface Finding {
 }
 
 export interface RetrievedPassage {
+  /**
+   * Stable corpus chunk id. Key on this, never on `source`: one document
+   * contributes many chunks and they all carry the same `source` string.
+   */
+  id: string;
   source: string;
+  url: string;
   text: string;
+  /**
+   * Absolute, saturating retrieval score in [0, 1). Deliberately not shown to
+   * students as a percentage — see `SourceList` in FeedbackSection.tsx.
+   */
   score: number;
 }
 

@@ -1,17 +1,11 @@
-"""NullRetriever — IRetriever that returns no passages.
+"""`NullRetriever` lives in `retrievers.py` with the other arms.
 
-Phase 1 has no RAG corpus. The retriever is a port the use case
-calls, so swapping in a real vector retriever in Phase 2 is a
-single-line change in the use case factory.
+Kept as a re-export because the composition root, the probe scripts and
+several tests import it from here, and moving it is not worth touching eight
+call sites to say the same thing.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from cxt.infrastructure.retrieval.retrievers import NullRetriever
 
-from cxt.domain.entities.feedback import RetrievedPassage
-
-
-@dataclass(frozen=True, slots=True)
-class NullRetriever:
-    def retrieve(self, *, query: str, top_k: int = 3) -> tuple[RetrievedPassage, ...]:
-        return ()
+__all__ = ["NullRetriever"]

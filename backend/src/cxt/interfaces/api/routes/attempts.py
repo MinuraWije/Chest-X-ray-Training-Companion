@@ -26,6 +26,7 @@ from cxt.infrastructure.ml.prompts import PromptBuilder, load_default_prompts
 from cxt.interfaces.api.dependencies import (
     get_attempt_repository,
     get_case_repository,
+    get_corpus_version,
     get_image_analyzer,
     get_image_loader,
     get_retriever,
@@ -59,6 +60,8 @@ def _build_use_case(
     retriever: IRetriever,
     image_loader: IImageLoader,
     max_repair_attempts: int,
+    settings: Settings,
+    corpus_version: str,
 ) -> SubmitAttemptUseCase:
     return SubmitAttemptUseCase(
         analyzer=analyzer,
@@ -69,6 +72,9 @@ def _build_use_case(
         prompt_builder=PromptBuilder(templates=load_default_prompts()),
         output_parser=OutputParser(),
         max_repair_attempts=max_repair_attempts,
+        retrieval_mode=settings.retrieval_runtime.value,
+        retrieval_k=settings.retrieval_top_k,
+        corpus_version=corpus_version,
     )
 
 
@@ -117,6 +123,7 @@ def submit_attempt(
     retriever: IRetriever = Depends(get_retriever),
     image_loader: IImageLoader = Depends(get_image_loader),
     settings: Settings = Depends(get_settings),
+    corpus_version: str = Depends(get_corpus_version),
 ) -> dict[str, object]:
     if not isinstance(body, dict):
         raise ValidationError("Request body must be a JSON object.")
@@ -151,6 +158,8 @@ def submit_attempt(
         retriever=retriever,
         image_loader=image_loader,
         max_repair_attempts=settings.medgemma_max_repair_attempts,
+        settings=settings,
+        corpus_version=corpus_version,
     )
     try:
         result = use_case.execute(

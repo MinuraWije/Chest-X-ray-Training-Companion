@@ -10,8 +10,10 @@ which read the bearer token, verify it, and look up the caller in `IUserReposito
 """
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from functools import lru_cache
+from pathlib import Path
 from typing import Annotated, cast
 
 from fastapi import Depends, Header
@@ -28,7 +30,12 @@ from cxt.domain.ports.retriever import IRetriever
 from cxt.domain.ports.review_repository import IReviewRepository
 from cxt.domain.ports.user_repository import IUserRepository
 from cxt.infrastructure.auth.jwt_auth_service import JwtAuthService
-from cxt.infrastructure.config.settings import MedGemmaRuntime, Settings, get_settings
+from cxt.infrastructure.config.settings import (
+    MedGemmaRuntime,
+    RetrievalRuntime,
+    Settings,
+    get_settings,
+)
 from cxt.infrastructure.data.database import (
     build_engine,
     build_session_factory,
@@ -42,12 +49,20 @@ from cxt.infrastructure.ml.dry_run_analyzer import DryRunMedGemmaAnalyzer
 from cxt.infrastructure.ml.image_loader import ByReferenceImageLoader, LocalImageLoader
 from cxt.infrastructure.ml.kaggle_tunnel_client import KaggleTunnelMedGemmaClient
 from cxt.infrastructure.ml.medgemma_analyzer import MedGemmaAnalyzer
-from cxt.infrastructure.retrieval.null_retriever import NullRetriever
+from cxt.infrastructure.retrieval.corpus import Corpus, load_corpus
+from cxt.infrastructure.retrieval.retrievers import (
+    BM25Retriever,
+    CategoryRetriever,
+    MisconceptionRetriever,
+    NullRetriever,
+)
 from cxt.shared.errors import (
     AuthenticationError,
     AuthorizationError,
     UpstreamUnavailableError,
 )
+
+logger = logging.getLogger(__name__)
 
 EngineCacheKey = tuple[str, bool]
 SessionCacheKey = tuple[str, bool, int]
@@ -111,8 +126,60 @@ def get_auth_service(
     )
 
 
-def get_retriever() -> IRetriever:
-    return NullRetriever()
+@lru_cache(maxsize=4)
+def _load_corpus_cached(corpus_dir: str) -> Corpus:
+    """Parse the corpus once per process, not once per request.
+
+    `BM25Retriever.__post_init__` builds an inverted index, so constructing one
+    per request would re-tokenize the whole corpus on every submission.
+    """
+    return load_corpus(Path(corpus_dir))
+
+
+@lru_cache(maxsize=4)
+def _build_retriever(
+    runtime: RetrievalRuntime, corpus_dir: str, score_floor: float
+) -> IRetriever:
+    if runtime == RetrievalRuntime.NULL:
+        return NullRetriever()
+    try:
+        corpus = _load_corpus_cached(corpus_dir)
+    except Exception as exc:
+        # A missing or malformed corpus degrades to Phase 1 rather than taking
+        # the API down. It is logged loudly because a silently-null retriever
+        # would let a whole eval arm run and report success having measured
+        # nothing.
+        logger.error(
+            "Retrieval runtime %s requested but the corpus at %s could not be "
+            "loaded (%s). Falling back to NullRetriever — retrieval is OFF.",
+            runtime.value,
+            corpus_dir,
+            exc,
+        )
+        return NullRetriever()
+    if runtime == RetrievalRuntime.ORACLE:
+        return CategoryRetriever(corpus=corpus)
+    if runtime == RetrievalRuntime.MISCONCEPTION:
+        return MisconceptionRetriever(corpus=corpus, score_floor=score_floor)
+    return BM25Retriever(corpus=corpus, score_floor=score_floor)
+
+
+def get_retriever(settings: Settings = Depends(get_settings)) -> IRetriever:
+    return _build_retriever(
+        settings.retrieval_runtime,
+        str(settings.corpus_dir),
+        settings.retrieval_score_floor,
+    )
+
+
+def get_corpus_version(settings: Settings = Depends(get_settings)) -> str:
+    """The corpus content hash to stamp on feedback, or "" when retrieval is off."""
+    if settings.retrieval_runtime == RetrievalRuntime.NULL:
+        return ""
+    try:
+        return _load_corpus_cached(str(settings.corpus_dir)).version
+    except Exception:
+        return ""
 
 
 def get_case_repository(
@@ -188,3 +255,5 @@ def require_role(*allowed_roles: str) -> Callable[[User], User]:
 def reset_dependency_caches_for_tests() -> None:
     _build_engine_cached.cache_clear()
     _build_session_factory_cached.cache_clear()
+    _load_corpus_cached.cache_clear()
+    _build_retriever.cache_clear()

@@ -14,22 +14,25 @@ retriever is a one-line factory change.
 from __future__ import annotations
 
 import logging
+import re
 import uuid
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 
 from cxt.domain.entities.case import Case
-from cxt.domain.entities.feedback import Feedback
+from cxt.domain.entities.feedback import Feedback, RetrievedPassage
 from cxt.domain.entities.student_attempt import StudentAttempt
 from cxt.domain.ports.attempt_repository import IAttemptRepository
 from cxt.domain.ports.case_repository import ICaseRepository
 from cxt.domain.ports.image_analyzer import IImageAnalyzer
 from cxt.domain.ports.image_loader import IImageLoader
-from cxt.domain.ports.retriever import IRetriever
+from cxt.domain.ports.retriever import IRetriever, RetrievalQuery
+from cxt.domain.value_objects.rationale import Rationale
 from cxt.infrastructure.ml.image_loader import ByReferenceImageLoader
 from cxt.infrastructure.ml.output_parser import OutputParser
 from cxt.infrastructure.ml.prompts import PromptBuilder, load_default_prompts
 from cxt.infrastructure.ml.resilient_analyzer import RetryingFeedbackParser
+from cxt.infrastructure.retrieval.misconception import named_categories
 from cxt.shared.errors import NotFoundError, UpstreamUnavailableError, ValidationError
 
 logger = logging.getLogger(__name__)
@@ -60,11 +63,20 @@ class SubmitAttemptUseCase:
         prompt_builder: PromptBuilder | None = None,
         output_parser: OutputParser | None = None,
         max_repair_attempts: int = 1,
+        retrieval_mode: str = "null",
+        retrieval_k: int = 3,
+        corpus_version: str = "",
     ) -> None:
         self._analyzer = analyzer
         self._attempts = attempt_repository
         self._cases = case_repository
         self._retriever = retriever
+        # Labels, not behaviour. The use case never branches on the mode — which
+        # arm is running is a composition-root choice — but every feedback row
+        # has to say which one produced it or the arms cannot be compared.
+        self._retrieval_mode = retrieval_mode
+        self._retrieval_k = retrieval_k
+        self._corpus_version = corpus_version
         self._image_loader = image_loader or ByReferenceImageLoader()
         self._prompt_builder = prompt_builder or PromptBuilder(templates=load_default_prompts())
         self._output_parser = output_parser or OutputParser()
@@ -109,6 +121,12 @@ class SubmitAttemptUseCase:
         return SubmitAttemptResult(attempt=attempt, feedback=feedback)
 
     def _generate_feedback(self, case: Case, attempt: StudentAttempt) -> Feedback:
+        # Retrieval happens BEFORE generation. In Phase 1 it ran afterwards and
+        # the passages were stapled on, which meant they grounded nothing: a
+        # grounding metric over a post-hoc attachment measures only whether
+        # prose written in ignorance happens to agree with a document it never
+        # saw. The whole point of Phase 2 is that the model reads them.
+        passages = self._retrieve(case, attempt)
         prompts = self._prompt_builder.build(
             clinical_context=case.metadata.get("clinical_context", ""),
             student_free_text=attempt.free_text,
@@ -118,6 +136,7 @@ class SubmitAttemptUseCase:
             # diagnosis it gets wrong most of the time.
             finding=case.ground_truth_finding,
             secondary_findings=case.secondary_findings,
+            passages=passages,
         )
         image = self._image_loader.load(case.image_url)
         result = self._analysis.analyze_and_parse(
@@ -127,23 +146,47 @@ class SubmitAttemptUseCase:
             system=prompts.system,
         )
         feedback = _enforce_ground_truth(result.feedback, case)
+        feedback = _enforce_citations(feedback, passages)
         feedback = _with_provenance(
             feedback,
             prompt_version=self._prompt_builder.version,
             model=result.model_output.model,
             repair_attempts=result.repair_attempts,
+            passages=passages,
+            retrieval_mode=self._retrieval_mode,
+            corpus_version=self._corpus_version,
         )
-        return self._attach_retrieval(feedback, attempt)
+        # `sources` records what was *supplied*, in the order the [Sn] labels
+        # were assigned, so a stored row can be replayed against the prompt the
+        # model actually saw.
+        return replace(feedback, sources=passages)
 
-    def _attach_retrieval(self, feedback: Feedback, attempt: StudentAttempt) -> Feedback:
+    def _retrieve(
+        self, case: Case, attempt: StudentAttempt
+    ) -> tuple[RetrievedPassage, ...]:
+        """Fetch evidence, degrading to none rather than failing the submission.
+
+        A broken corpus index must not cost a student their attempt — the
+        Phase 1 behaviour (no passages) is a perfectly good answer. The
+        consequence is that the eval has to assert sources are non-empty; left
+        unasserted, a silently-empty retriever would let a whole arm run,
+        measure nothing, and report success.
+        """
+        query = RetrievalQuery(
+            free_text=attempt.free_text,
+            confirmed_categories=case.confirmed_categories,
+            named_categories=named_categories(attempt.free_text),
+            case_id=case.id,
+        )
         try:
-            passages = self._retriever.retrieve(query=attempt.free_text, top_k=3)
+            return tuple(self._retriever.retrieve(query=query, top_k=self._retrieval_k))
         except Exception as exc:
-            logger.warning("Retriever failed (ignored): %s", exc)
-            return feedback
-        if not passages:
-            return feedback
-        return replace(feedback, sources=tuple(passages))
+            logger.warning(
+                "Retriever failed for attempt %s, continuing without evidence: %s",
+                attempt.id,
+                exc,
+            )
+            return ()
 
 
 def _enforce_ground_truth(feedback: Feedback, case: Case) -> Feedback:
@@ -181,18 +224,104 @@ def _enforce_ground_truth(feedback: Feedback, case: Case) -> Feedback:
     return replace(feedback, likely_finding=truth.label, raw=raw)
 
 
+_CITATION_RE = re.compile(r"\[S(\d+)\]")
+
+
+def _enforce_citations(
+    feedback: Feedback, passages: tuple[RetrievedPassage, ...]
+) -> Feedback:
+    """Strip any `[Sn]` naming a passage that was never supplied.
+
+    Mirrors `_enforce_ground_truth`, for the same reason and with the same
+    resolution. The model is handed exactly `len(passages)` labels; anything
+    beyond that is a citation to a document that does not exist, and a
+    fabricated citation is the single worst failure mode for a tool whose
+    premise is "the feedback cites published evidence". A student cannot tell
+    a real [S4] from an invented one, so it never reaches them.
+
+    The removal is recorded rather than swallowed: `citations_stripped` is the
+    confabulation signal the eval reads, and a rising rate means the prompt has
+    drifted.
+    """
+    supplied = len(passages)
+    stripped: list[str] = []
+
+    def _scrub(text: str) -> str:
+        def _replace(match: re.Match[str]) -> str:
+            index = int(match.group(1))
+            if 1 <= index <= supplied:
+                return match.group(0)
+            stripped.append(match.group(0))
+            # Removed rather than rewritten to a valid label: silently
+            # repointing a fabricated citation at a real passage would assert
+            # that passage says something nobody checked.
+            return ""
+        return _CITATION_RE.sub(_replace, text)
+
+    def _clean(value: Rationale) -> Rationale:
+        scrubbed = _scrub(value.value)
+        if scrubbed == value.value:
+            return value
+        # `Rationale` rejects an empty string, so a field that was nothing but
+        # a fabricated citation keeps its original text rather than taking the
+        # whole submission down over a formatting failure.
+        return Rationale(scrubbed.strip() or value.value)
+
+    cleaned = replace(
+        feedback,
+        key_signs=_clean(feedback.key_signs),
+        comparison=_clean(feedback.comparison),
+        missed_clues=_clean(feedback.missed_clues),
+        learning_point=_clean(feedback.learning_point),
+        key_observations=(
+            _clean(feedback.key_observations)
+            if feedback.key_observations is not None
+            else None
+        ),
+    )
+    if not stripped:
+        return feedback
+    logger.warning(
+        "Model cited %s but only %d passage(s) were supplied; removed.",
+        ", ".join(sorted(set(stripped))),
+        supplied,
+    )
+    raw = dict(cleaned.raw)
+    raw["citations_stripped"] = sorted(set(stripped))
+    return replace(cleaned, raw=raw)
+
+
 def _with_provenance(
     feedback: Feedback,
     *,
     prompt_version: str,
     model: str,
     repair_attempts: int,
+    passages: tuple[RetrievedPassage, ...] = (),
+    retrieval_mode: str = "null",
+    corpus_version: str = "",
 ) -> Feedback:
-    """Record which prompt and model produced this feedback (NFR-4)."""
+    """Record which prompt, model and corpus produced this feedback (NFR-4).
+
+    The retrieval fields are part of provenance, not telemetry: two runs are
+    only comparable if the corpus matched, and a stored row you cannot
+    regenerate is not provenance.
+    """
     raw = dict(feedback.raw)
     raw["prompt_version"] = prompt_version
     raw["model"] = model
     raw["repair_attempts"] = repair_attempts
+    raw["retrieval_mode"] = retrieval_mode
+    raw["retrieval_k"] = len(passages)
+    raw["corpus_version"] = corpus_version
+    # An abstention is a deliberate outcome, not a missing value. The eval
+    # reports its rate: a system that knows when it has nothing to cite is a
+    # better artefact than one with higher precision and no such notion.
+    raw["abstained"] = not passages
+    raw["retrieval"] = [
+        {"id": p.id, "score": float(p.score), "rank": rank}
+        for rank, p in enumerate(passages, start=1)
+    ]
     return replace(feedback, raw=raw)
 
 

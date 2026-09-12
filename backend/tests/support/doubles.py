@@ -10,9 +10,11 @@ import json
 import time
 
 from cxt.domain.entities.case import Case
+from cxt.domain.entities.feedback import RetrievedPassage
 from cxt.domain.entities.finding import Finding, FindingCategory
 from cxt.domain.ports.image_analyzer import ImageAnalysis
 from cxt.domain.ports.medgemma_client import ModelOutput
+from cxt.domain.ports.retriever import RetrievalQuery
 from cxt.domain.value_objects.cxr_image_ref import CxrImageRef
 from cxt.domain.value_objects.finding_label import FindingLabel
 from cxt.shared.errors import NotFoundError, UpstreamUnavailableError
@@ -184,3 +186,44 @@ class FakeMedGemmaClient:
             output_tokens=len(response.split()),
             model=self._model,
         )
+
+
+class StubRetriever:
+    """IRetriever returning a fixed set of passages, recording every query.
+
+    Tests assert on `queries` to check that the use case passed the *right*
+    signals — the student's named categories, the case's confirmed ones —
+    rather than only that retrieval happened at all.
+    """
+
+    def __init__(
+        self,
+        passages: tuple[RetrievedPassage, ...] = (),
+        *,
+        raises: Exception | None = None,
+    ) -> None:
+        self._passages = passages
+        self._raises = raises
+        self.queries: list[RetrievalQuery] = []
+
+    def retrieve(
+        self, *, query: RetrievalQuery, top_k: int = 3
+    ) -> tuple[RetrievedPassage, ...]:
+        self.queries.append(query)
+        if self._raises is not None:
+            raise self._raises
+        return self._passages[:top_k]
+
+
+def make_passages(count: int = 3) -> tuple[RetrievedPassage, ...]:
+    """`count` distinct passages, ids `chunk-1`.. so `[Sn]` maps cleanly."""
+    return tuple(
+        RetrievedPassage(
+            text=f"Teaching passage number {index}.",
+            source=f"Test source — section {index}",
+            score=0.9 - (index * 0.1),
+            id=f"chunk-{index}",
+            url=f"https://example.org/doc#{index}",
+        )
+        for index in range(1, count + 1)
+    )

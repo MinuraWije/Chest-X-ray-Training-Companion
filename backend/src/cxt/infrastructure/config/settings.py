@@ -29,11 +29,25 @@ DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 PROCESSED_DIR: Final[Path] = DATA_DIR / "processed"
 IMAGES_DIR: Final[Path] = PROCESSED_DIR / "images"
 MANIFEST_PATH: Final[Path] = PROCESSED_DIR / "manifest.csv"
+CORPUS_DIR: Final[Path] = DATA_DIR / "corpus"
 
 
 class MedGemmaRuntime(str, Enum):
     KAGGLE_TUNNEL = "kaggle_tunnel"
     DRY_RUN = "dry_run"
+
+
+class RetrievalRuntime(str, Enum):
+    """The Phase 2 arms. One name per row of the comparison table.
+
+    `oracle` filters on the case's confirmed finding, so it is an upper bound
+    rather than a retrieval result and its precision is not reported.
+    """
+
+    NULL = "null"
+    ORACLE = "oracle"
+    BM25 = "bm25"
+    MISCONCEPTION = "misconception"
 
 
 class Settings(BaseSettings):
@@ -72,6 +86,15 @@ class Settings(BaseSettings):
     medgemma_warmup_timeout_seconds: float = Field(default=600.0, ge=1.0, le=1800.0)
     medgemma_max_repair_attempts: int = Field(default=1, ge=0, le=3)
     medgemma_max_image_bytes: int = Field(default=8 * 1024 * 1024, ge=1024)
+
+    # Which Phase 2 retrieval arm this process runs. `null` reproduces Phase 1
+    # and is the default, so an existing deployment is unchanged until asked.
+    retrieval_runtime: RetrievalRuntime = RetrievalRuntime.NULL
+    corpus_dir: Path = CORPUS_DIR
+    retrieval_top_k: int = Field(default=3, ge=1, le=10)
+    # Normalised-score floor below which the system supplies no passages at
+    # all. See `retrievers.DEFAULT_SCORE_FLOOR` for why this can be absolute.
+    retrieval_score_floor: float = Field(default=0.25, ge=0.0, le=1.0)
 
     max_eval_cases: int = Field(default=30, ge=1, le=10_000)
 
