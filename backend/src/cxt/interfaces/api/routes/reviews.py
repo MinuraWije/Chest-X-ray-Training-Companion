@@ -29,6 +29,7 @@ from cxt.interfaces.api.dependencies import (
     get_review_repository,
     require_role,
 )
+from cxt.interfaces.api.schemas.feedback import shape_feedback
 from cxt.shared.errors import ValidationError
 
 logger = logging.getLogger(__name__)
@@ -158,31 +159,10 @@ def submit_review(
 
 
 def _shape_attempt_with_feedback(attempt, feedback) -> dict[str, object]:  # type: ignore[no-untyped-def]
+    """The educator sees exactly the feedback the student saw — same shaper, no copy."""
     summary = _attempt_to_summary(attempt).model_dump()
-    summary["feedback"] = _shape_feedback(feedback) if feedback is not None else None
+    summary["feedback"] = shape_feedback(feedback) if feedback is not None else None
     return summary
-
-
-def _shape_feedback(feedback) -> dict[str, object]:  # type: ignore[no-untyped-def]
-    category = feedback.likely_finding.value
-    primary_dict = {
-        "category": category,
-        "label": category,
-        "confidence": float(feedback.confidence.value),
-        "rationale": feedback.key_signs.value,
-        "source": "model",
-    }
-    return {
-        "primaryFinding": primary_dict,
-        "differentialFindings": [],
-        "keyObservations": feedback.key_signs.value,
-        "teachingPoint": feedback.learning_point.value,
-        "sources": [
-            {"source": s.source, "text": s.text, "score": float(s.score)}
-            for s in feedback.sources
-        ],
-        "raw": {},
-    }
 
 
 __all__ = ["router"]

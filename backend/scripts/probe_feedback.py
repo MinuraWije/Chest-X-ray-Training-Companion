@@ -46,6 +46,7 @@ from cxt.domain.entities.student_attempt import StudentAttempt  # noqa: E402
 from cxt.infrastructure.config.settings import MedGemmaRuntime, get_settings  # noqa: E402
 from cxt.infrastructure.data.manifest_repository import ManifestRepository  # noqa: E402
 from cxt.infrastructure.eval import select_eval_cases  # noqa: E402
+from cxt.infrastructure.logging.redaction import redact_url  # noqa: E402
 from cxt.infrastructure.ml.dry_run_analyzer import DryRunMedGemmaAnalyzer  # noqa: E402
 from cxt.infrastructure.ml.image_loader import (  # noqa: E402
     ByReferenceImageLoader,
@@ -141,7 +142,7 @@ def _build_analyzer(settings, *, warm: bool):  # type: ignore[no-untyped-def]
     client = KaggleTunnelMedGemmaClient(settings)
     if not client.ping():
         raise SystemExit(
-            f"MedGemma tunnel at {settings.medgemma_tunnel_url} did not answer /ping. "
+            f"MedGemma tunnel at {redact_url(settings.medgemma_tunnel_url)} did not answer /ping. "
             "Is the Kaggle notebook awake? Restarting it changes the ngrok URL."
         )
     if warm and not client.warm_up():

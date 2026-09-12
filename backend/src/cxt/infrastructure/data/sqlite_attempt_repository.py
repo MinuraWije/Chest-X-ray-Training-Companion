@@ -12,6 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from cxt.domain.entities.feedback import (
+    DifferentialFinding,
     Feedback,
     RetrievedPassage,
 )
@@ -47,11 +48,36 @@ def _row_to_feedback(attempt_id: str, payload: dict[str, Any]) -> Feedback:
         missed_clues=Rationale(str(payload.get("missed_clues", ""))),
         learning_point=Rationale(str(payload.get("learning_point", ""))),
         confidence=Confidence(float(payload.get("confidence", 0.5))),
+        key_observations=(
+            Rationale(str(payload["key_observations"])) if payload.get("key_observations") else None
+        ),
+        differentials=tuple(
+            DifferentialFinding(
+                label=str(d["label"]),
+                confidence=Confidence(float(d.get("confidence", 0.5))),
+            )
+            for d in payload.get("differentials", [])
+            if isinstance(d, dict) and d.get("label")
+        ),
         sources=tuple(
-            RetrievedPassage(text=p["text"], source=p["source"], score=float(p.get("score", 1.0)))
+            RetrievedPassage(
+                text=p["text"],
+                source=p["source"],
+                score=float(p.get("score", 1.0)),
+                id=str(p.get("id", "")),
+                url=str(p.get("url", "")),
+            )
             for p in payload.get("sources", [])
         ),
-        raw={"parsed": payload, "raw_text": raw_text},
+        # `provenance` carries prompt_version/model/retrieval_mode/corpus_version
+        # back out. Without it a reloaded feedback row could not be traced to the
+        # prompt and corpus that produced it, and a row you cannot regenerate is
+        # not provenance. Older rows simply have no `provenance` key.
+        raw={
+            "parsed": payload,
+            "raw_text": raw_text,
+            **(payload.get("provenance") or {}),
+        },
     )
 
 
@@ -67,8 +93,28 @@ def _maybe_load_feedback(attempt_id: str, raw: str | None) -> Feedback | None:
     return _row_to_feedback(attempt_id, payload)
 
 
+#: `raw` keys persisted alongside the feedback payload, so a stored row can be
+#: traced back to the prompt, model and corpus that produced it (NFR-4). The
+#: rest of `raw` is the unparsed model response and is not worth the bytes.
+_PERSISTED_RAW_KEYS: tuple[str, ...] = (
+    "category",
+    "model_category",
+    "ground_truth_override",
+    "prompt_version",
+    "model",
+    "repair_attempts",
+    "retrieval_mode",
+    "retrieval_k",
+    "corpus_version",
+    "abstained",
+    "citations_stripped",
+    "retrieval",
+)
+
+
 def feedback_to_dict(feedback: Feedback) -> dict[str, Any]:
     category = feedback.likely_finding.value
+    raw = feedback.raw if isinstance(feedback.raw, dict) else {}
     return {
         "primary_finding": {
             "category": category,
@@ -82,11 +128,25 @@ def feedback_to_dict(feedback: Feedback) -> dict[str, Any]:
         "missed_clues": feedback.missed_clues.value,
         "learning_point": feedback.learning_point.value,
         "confidence": float(feedback.confidence.value),
+        "key_observations": (
+            feedback.key_observations.value if feedback.key_observations is not None else ""
+        ),
+        "differentials": [
+            {"label": d.label, "confidence": float(d.confidence.value)}
+            for d in feedback.differentials
+        ],
         "sources": [
-            {"text": s.text, "source": s.source, "score": float(s.score)}
+            {
+                "text": s.text,
+                "source": s.source,
+                "score": float(s.score),
+                "id": s.id,
+                "url": s.url,
+            }
             for s in feedback.sources
         ],
-        "raw_text": (feedback.raw.get("raw_text", "") if isinstance(feedback.raw, dict) else ""),
+        "provenance": {k: raw[k] for k in _PERSISTED_RAW_KEYS if k in raw},
+        "raw_text": raw.get("raw_text", ""),
     }
 
 

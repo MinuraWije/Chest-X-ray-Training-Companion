@@ -53,6 +53,7 @@ from cxt.infrastructure.eval import (  # noqa: E402
     write_json_report,
     write_markdown_summary,
 )
+from cxt.infrastructure.logging.redaction import redact_url  # noqa: E402
 from cxt.infrastructure.ml.dry_run_analyzer import (  # noqa: E402
     DryRunMedGemmaAnalyzer,
 )
@@ -86,7 +87,7 @@ def _build_analyzer(settings: Settings, *, warm: bool = True):  # type: ignore[n
     client = KaggleTunnelMedGemmaClient(settings)
     if not client.ping():
         raise SystemExit(
-            f"MedGemma tunnel at {settings.medgemma_tunnel_url} did not answer /ping. "
+            f"MedGemma tunnel at {redact_url(settings.medgemma_tunnel_url)} did not answer /ping. "
             "Is the Kaggle notebook awake? Restarting it changes the ngrok URL."
         )
     if warm:

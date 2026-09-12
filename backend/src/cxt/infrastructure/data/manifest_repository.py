@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import csv
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 from cxt.domain.entities.case import Case
 from cxt.domain.entities.finding import Finding, FindingCategory
@@ -25,6 +25,64 @@ _CATEGORY_LABEL: dict[FindingCategory, str] = {
     FindingCategory.FRACTURE: "Fracture",
     FindingCategory.NO_FINDING: "No finding",
 }
+
+
+_SEX_WORD: dict[str, str] = {"M": "man", "F": "woman"}
+
+# Facts only, no interpretation, and deliberately terse. What AP *means* for
+# the cardiothoracic ratio is already a prompt rule in both p2.4 and p3.0;
+# repeating it here would spend the budget twice. And the budget is real: the
+# worst-case p2.4 system prompt renders at 3982 of the notebook's 4000-char
+# cap, so everything this function returns has to fit in 48 characters or the
+# frozen baseline arm starts returning 422s instead of feedback.
+_VIEW_NOTE: dict[str, str] = {
+    "PA": "PA (erect) film",
+    "AP": "AP (supine/portable) film",
+}
+
+#: Hard ceiling for the rendered string. See `_VIEW_NOTE` for where 48 comes
+#: from. `tests/.../test_prompts.py` asserts the rendered prompt fits; this
+#: keeps the failure local to the function that caused it.
+MAX_CLINICAL_CONTEXT_CHARS: Final[int] = 48
+
+
+def build_clinical_context(row: dict[str, str]) -> str:
+    """Render the demographics the manifest already holds into prompt text.
+
+    Every production prompt rendered "(no clinical context provided)" while
+    the manifest row sat on `56,M,AP` — the field was stored and never used.
+    The model was left to infer the projection, and it did: probe after probe
+    it guessed "AP portable view" unprompted, which is exactly the fact that
+    makes a cardiothoracic ratio unreadable. Supplying it stops the tutor
+    reporting a ratio as if it were diagnostic.
+
+    Returns "" when the row carries nothing usable, so `PromptBuilder` falls
+    back to its own "(no clinical context provided)" sentinel rather than
+    rendering a half-empty sentence.
+    """
+    parts: list[str] = []
+    age = (row.get("patient_age") or "").strip()
+    sex = (row.get("patient_sex") or "").strip().upper()
+    person = _SEX_WORD.get(sex, "patient")
+    if age.isdigit():
+        parts.append(f"{int(age)}-year-old {person}")
+    elif sex in _SEX_WORD:
+        parts.append(f"Adult {person}")
+    view = (row.get("view_position") or "").strip().upper()
+    if view in _VIEW_NOTE:
+        parts.append(_VIEW_NOTE[view])
+    elif view:
+        parts.append(f"{view} film")
+    if not parts:
+        return ""
+    rendered = ", ".join(parts) + "."
+    if len(rendered) > MAX_CLINICAL_CONTEXT_CHARS:
+        # Truncating silently would ship a prompt that overflows the notebook's
+        # cap on exactly the rows with the most metadata. Raising is wrong too:
+        # one odd manifest row should not take down every case. Drop the view
+        # note, which is the expendable half.
+        rendered = (parts[0] + ".")[:MAX_CLINICAL_CONTEXT_CHARS]
+    return rendered
 
 
 class ManifestRepository(ICaseRepository):
@@ -79,6 +137,7 @@ class ManifestRepository(ICaseRepository):
             "patient_age": row.get("patient_age", ""),
             "patient_sex": row.get("patient_sex", ""),
             "view_position": row.get("view_position", ""),
+            "clinical_context": build_clinical_context(row),
         }
         return Case(
             id=row["case_id"],

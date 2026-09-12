@@ -25,12 +25,15 @@ traced back to the exact prompt that produced it.
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from string import Template
 from typing import Final
 
+from cxt.domain.entities.feedback import RetrievedPassage
 from cxt.domain.entities.finding import Finding
+from cxt.shared.errors import ValidationError
 
 _PROMPTS_DIR = Path(__file__).resolve().parents[5] / "kaggle_runtime" / "prompts"
 
@@ -66,15 +69,44 @@ _PROMPTS_DIR = Path(__file__).resolve().parents[5] / "kaggle_runtime" / "prompts
 # presence of a pleural effusion". Replaced with a prohibition on attributing
 # anything the student's words do not contain — false praise is the one error
 # a learner cannot detect from the feedback itself.
-PROMPT_VERSION: Final[str] = "p2.4"
+# p3.0: the JSON schema block moves from the system turn to the user turn, and
+# the user turn gains an `$evidence_block` carrying retrieved passages.
+#
+# The move is forced, not stylistic. `$clinical_context` was never populated —
+# `ManifestRepository._to_case` stored age/sex/view and never rendered them, so
+# every production prompt said "(no clinical context provided)" while the row
+# held `56,M,AP`. Filling it in (which is what stops the tutor quoting a
+# cardiothoracic ratio off a projection that magnifies the heart) pushes the
+# worst-case rendered system prompt to 4123 chars against the notebook's 4000
+# cap — a 422, not a regression you would notice in review. The schema block is
+# ~1100 chars and belongs with the answer anyway.
+#
+# p2.4's text is kept verbatim under `prompts/p2.4/` so the frozen Phase 1 arm
+# stays byte-comparable. Its *rendered* output does change, because
+# clinical_context is now real; the Phase 2 report says so rather than
+# pretending the baseline is untouched.
+PROMPT_VERSION: Final[str] = "p3.0"
+
+#: The frozen Phase 1 baseline, kept loadable so Phase 2 can run it as an arm.
+BASELINE_PROMPT_VERSION: Final[str] = "p2.4"
+
+KNOWN_PROMPT_VERSIONS: Final[tuple[str, ...]] = ("p2.4", "p3.0")
 
 _NO_CONTEXT: Final[str] = "(no clinical context provided)"
+
+_NO_EVIDENCE: Final[str] = (
+    "\nNo reference material was supplied for this case.\n"
+)
 
 
 @dataclass(frozen=True, slots=True)
 class PromptSet:
     system: str
     user: str
+    # Which template pair this came from. Defaulted so a hand-built PromptSet
+    # in a test still constructs, and so a *rendered* set (the output of
+    # `build`) inherits the version of the templates that produced it.
+    version: str = PROMPT_VERSION
 
     @property
     def fingerprint(self) -> str:
@@ -83,10 +115,55 @@ class PromptSet:
         return digest.hexdigest()[:12]
 
 
-def load_default_prompts() -> PromptSet:
-    system = (_PROMPTS_DIR / "system.txt").read_text(encoding="utf-8")
-    user = (_PROMPTS_DIR / "user.txt").read_text(encoding="utf-8")
-    return PromptSet(system=system, user=user)
+def load_default_prompts(version: str | None = None) -> PromptSet:
+    """Load a versioned template pair from `kaggle_runtime/prompts/<version>/`.
+
+    An unknown version raises rather than falling back: the whole point of
+    versioning is that a report names the prompt that produced it, and a silent
+    default would let a mistyped arm name be reported as a real comparison.
+    """
+    key = version or PROMPT_VERSION
+    if key not in KNOWN_PROMPT_VERSIONS:
+        known = ", ".join(KNOWN_PROMPT_VERSIONS)
+        raise ValidationError(f"Unknown prompt version {key!r}. Known: {known}.")
+    directory = _PROMPTS_DIR / key
+    system = (directory / "system.txt").read_text(encoding="utf-8")
+    user = (directory / "user.txt").read_text(encoding="utf-8")
+    return PromptSet(system=system, user=user, version=key)
+
+
+def render_evidence_block(passages: Sequence[RetrievedPassage]) -> str:
+    """Render retrieved passages as the opaque `[S1] [S2] [S3]` block.
+
+    Labels are positional and carry no identity: the model is told what the
+    passage says, not where it came from. Handing it "WHO Manual of Diagnostic
+    Imaging p.42" invites it to weigh the source's authority against the image,
+    and the one thing this prompt must prevent is a passage overriding what is
+    actually on the film. The mapping back to real chunk ids lives in
+    `Feedback.sources`, in order.
+    """
+    if not passages:
+        return _NO_EVIDENCE
+    lines = [
+        "",
+        "Reference passages from published teaching texts. They describe these",
+        "findings in general and were not written about this patient:",
+        "",
+    ]
+    for index, passage in enumerate(passages, start=1):
+        lines.append(f"[S{index}] {passage.text.strip()}")
+        lines.append("")
+    labels = ", ".join(f"[S{i}]" for i in range(1, len(passages) + 1))
+    lines.extend(
+        [
+            f"Cite a passage as {labels} only where that passage's text supports the "
+            "sentence you are writing. Those are the only labels that exist; never "
+            "write one you were not shown. Citing nothing is correct when none of "
+            "them bear on your point — do not reach for one to look thorough.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def _secondary_line(findings: tuple[Finding, ...]) -> str:
@@ -114,6 +191,7 @@ class PromptBuilder:
         student_free_text: str,
         finding: Finding,
         secondary_findings: tuple[Finding, ...] = (),
+        passages: Sequence[RetrievedPassage] = (),
     ) -> PromptSet:
         """Compose the per-case prompts.
 
@@ -124,6 +202,13 @@ class PromptBuilder:
         `secondary_findings` are the other categories the case's labels confirm.
         They default to empty so a single-finding case renders exactly the text
         it did before.
+
+        `passages` are the retrieved evidence. They default to empty, which
+        renders the explicit "no reference material was supplied" line rather
+        than a gap — the p3.0-empty control arm is exactly this call, and a
+        control that differs from the treatment by an accidental blank line is
+        not a control. On p2.4, whose template has no `$evidence_block`,
+        `safe_substitute` drops the value and the arm is unaffected.
         """
         safe_context = clinical_context.strip() or _NO_CONTEXT
         safe_text = student_free_text.strip()
@@ -134,14 +219,16 @@ class PromptBuilder:
             "secondary_findings_line": _secondary_line(secondary_findings),
         }
         system = Template(self.templates.system).safe_substitute(**substitutions)
-        # The student's answer belongs in the user turn: it is user content,
-        # and the notebook caps `system` at 4000 chars but `prompt` at 8000.
+        # The student's answer and the passages belong in the user turn: they
+        # are content rather than instruction, and the notebook caps `system`
+        # at 4000 chars but `prompt` at 8000.
         user = Template(self.templates.user).safe_substitute(
             **substitutions,
             student_free_text=safe_text,
+            evidence_block=render_evidence_block(passages),
         )
-        return PromptSet(system=system, user=user)
+        return PromptSet(system=system, user=user, version=self.templates.version)
 
     @property
     def version(self) -> str:
-        return f"{PROMPT_VERSION}+{self.templates.fingerprint}"
+        return f"{self.templates.version}+{self.templates.fingerprint}"

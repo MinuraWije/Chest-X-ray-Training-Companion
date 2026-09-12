@@ -29,11 +29,21 @@ class FeedbackSection:
 
 @dataclass(frozen=True, slots=True)
 class RetrievedPassage:
-    """A passage retrieved from the RAG corpus. Phase 1 always empty."""
+    """A passage retrieved from the teaching corpus.
+
+    `source` is a human-readable citation ("WHO Manual of Diagnostic Imaging,
+    p.42") and is deliberately **not** unique — a single document contributes
+    many chunks, all carrying the same string. `id` is the chunk's stable
+    corpus identifier and is what any keying, deduplication or citation
+    enforcement must use. Both `id` and `url` default to empty so feedback
+    rows persisted before Phase 2 still deserialize.
+    """
 
     text: str
     source: str
     score: float = 1.0
+    id: str = ""
+    url: str = ""
 
     def __post_init__(self) -> None:
         if not isinstance(self.text, str) or not self.text.strip():
@@ -42,6 +52,10 @@ class RetrievedPassage:
             raise ValidationError("RetrievedPassage.source must be a non-empty string.")
         if not isinstance(self.score, int | float) or not 0.0 <= float(self.score) <= 1.0:
             raise ValidationError("RetrievedPassage.score must be in [0.0, 1.0].")
+        if not isinstance(self.id, str):
+            raise ValidationError("RetrievedPassage.id must be a string.")
+        if not isinstance(self.url, str):
+            raise ValidationError("RetrievedPassage.url must be a string.")
 
 
 @dataclass(frozen=True, slots=True)

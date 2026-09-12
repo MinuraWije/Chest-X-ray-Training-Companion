@@ -19,6 +19,8 @@ from typing import Final
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from cxt.infrastructure.logging.redaction import redact_url
+
 logger = logging.getLogger(__name__)
 
 PROJECT_ROOT: Final[Path] = Path(__file__).resolve().parents[5]
@@ -89,10 +91,16 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     settings = Settings()
+    # The tunnel URL is redacted, never printed. It is a bearer capability:
+    # whoever holds it can drive the notebook until ngrok rotates it, and this
+    # line runs on every process start including the ones whose output is
+    # captured into `reports/`. The redacted form still answers the only
+    # question this log line exists for — is a tunnel configured, and is it the
+    # host I think it is.
     logger.info(
         "settings: runtime=%s tunnel=%s max_new_tokens=%d",
         settings.medgemma_runtime.value,
-        settings.medgemma_tunnel_url or "<unset>",
+        redact_url(settings.medgemma_tunnel_url),
         settings.medgemma_max_new_tokens,
     )
     if os.environ.get("MEDGEMMA_DRY_RUN"):

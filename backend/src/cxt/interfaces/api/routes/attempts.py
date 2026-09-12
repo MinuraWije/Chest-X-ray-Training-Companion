@@ -31,6 +31,7 @@ from cxt.interfaces.api.dependencies import (
     get_retriever,
     require_role,
 )
+from cxt.interfaces.api.schemas.feedback import shape_feedback, shape_passage
 from cxt.shared.errors import NotFoundError, UpstreamUnavailableError, ValidationError
 
 logger = logging.getLogger(__name__)
@@ -90,10 +91,7 @@ def _feedback_to_dto(feedback) -> dict[str, object]:  # type: ignore[no-untyped-
             {"label": d.label, "confidence": float(d.confidence.value)}
             for d in feedback.differentials
         ],
-        "sources": [
-            {"source": s.source, "text": s.text, "score": float(s.score)}
-            for s in feedback.sources
-        ],
+        "sources": [shape_passage(s) for s in feedback.sources],
         "primary": primary,
     }
 
@@ -106,47 +104,6 @@ def _attempt_to_dto(attempt, feedback=None) -> dict[str, object]:  # type: ignor
         "freeText": attempt.free_text,
         "submittedAt": attempt.submitted_at.isoformat(),
         "feedback": _feedback_to_dto(feedback) if feedback is not None else None,
-    }
-
-
-def _shape_feedback(feedback) -> dict[str, object]:  # type: ignore[no-untyped-def]
-    """Re-shape the internal Feedback entity into the FE-facing `Feedback` interface."""
-    label = feedback.likely_finding.value
-    # `likely_finding` is the model's human-readable label ("Right apical
-    # pneumothorax"); the canonical category is recorded separately by the parser.
-    raw = feedback.raw if isinstance(feedback.raw, dict) else {}
-    category = raw.get("category") or label
-    primary_dict = {
-        "category": category,
-        "label": label,
-        "confidence": float(feedback.confidence.value),
-        "rationale": feedback.key_signs.value,
-        "source": "model",
-    }
-    key_observations = (
-        feedback.key_observations.value
-        if feedback.key_observations is not None
-        else feedback.key_signs.value
-    )
-    return {
-        "primaryFinding": primary_dict,
-        "differentialFindings": [
-            {
-                "category": d.label,
-                "label": d.label,
-                "confidence": float(d.confidence.value),
-                "rationale": "",
-                "source": "model",
-            }
-            for d in feedback.differentials
-        ],
-        "keyObservations": key_observations,
-        "teachingPoint": feedback.learning_point.value,
-        "sources": [
-            {"source": s.source, "text": s.text, "score": float(s.score)}
-            for s in feedback.sources
-        ],
-        "raw": {},
     }
 
 
@@ -211,7 +168,7 @@ def submit_attempt(
 
     return {
         **_attempt_to_dto(result.attempt),
-        "feedback": _shape_feedback(result.feedback),
+        "feedback": shape_feedback(result.feedback),
     }
 
 
@@ -226,7 +183,7 @@ def get_attempt(
         raise NotFoundError(f"Attempt not found: {attempt_id}")
     return {
         **_attempt_to_dto(attempt),
-        "feedback": _shape_feedback(feedback) if feedback is not None else None,
+        "feedback": shape_feedback(feedback) if feedback is not None else None,
     }
 
 

@@ -1,0 +1,24 @@
+Examine the chest radiograph above, knowing that the confirmed finding is $ground_truth_label.
+
+Explain where that finding is visible on this image, and assess the student's interpretation against it.
+
+The student wrote:
+"$student_free_text"
+$evidence_block
+Return a JSON object with EXACTLY these keys:
+
+{
+  "primary_finding": {
+    "category": "$ground_truth_category",
+    "label": "<short human-readable label for the confirmed finding>",
+    "confidence": <number between 0.0 and 1.0 — see the rule on this in the system prompt>,
+    "rationale": "<1-3 sentences pointing to the image features that demonstrate this finding>"
+  },
+  "differential_findings": [
+    {"label": "<a finding a student could plausibly confuse this with>", "confidence": <0.0-1.0, how likely a student is to be tempted by it — NOT your belief in it>}
+  ],
+  "key_observations": "<2-4 sentences describing what is actually visible on this film: where to look, which side, what the sign looks like>",
+  "teaching_point": "<1-2 sentence educational takeaway for the student>"
+}
+
+Output only the JSON object.
