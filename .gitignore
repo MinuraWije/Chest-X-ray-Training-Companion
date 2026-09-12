@@ -1,0 +1,49 @@
+# --- Datasets -------------------------------------------------------------
+# The 5,000-image NIH ChestX-ray14 download, held twice: `Dataset/images/` and
+# `data/raw/images/` are byte-identical copies, 1.9 GB each. Untracked because
+# `scripts/download_nih_subset.py` refetches them and `scripts/build_manifest.py`
+# reselects from them, so committing 3.9 GB would store reproducible bytes at
+# roughly four times GitHub's recommended repository size.
+Dataset/images/
+data/raw/images/
+
+# `data/processed/images/` is deliberately NOT ignored. Those 300 files are the
+# curated corpus the application serves, and tracking them (~118 MB) is what
+# lets a fresh clone run without the multi-gigabyte NIH download first.
+
+# The manifests, provenance and label audits are small and ARE tracked —
+# they are what makes the raw images reproducible. Do not add them here.
+
+# --- Python ---------------------------------------------------------------
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Node / frontend ------------------------------------------------------
+node_modules/
+dist/
+.dist/
+*.local
+
+# --- Databases ------------------------------------------------------------
+# Dev and smoke-test SQLite files; schema comes from the app, not from these.
+*.db
+*.db-journal
+*.sqlite3
+
+# --- Secrets --------------------------------------------------------------
+# The ngrok tunnel URL and any tokens live here. Never commit.
+.env
+.env.*
+!.env.example
+
+# --- Editors / OS ---------------------------------------------------------
+.idea/
+.vscode/
+Thumbs.db
+ehthumbs.db
+Desktop.ini

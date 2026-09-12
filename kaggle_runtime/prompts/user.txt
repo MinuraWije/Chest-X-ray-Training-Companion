@@ -1,0 +1,8 @@
+Examine the chest radiograph above, knowing that the confirmed finding is $ground_truth_label.
+
+Explain where that finding is visible on this image, and assess the student's interpretation against it.
+
+The student wrote:
+"$student_free_text"
+
+Respond with the JSON object described in the system prompt.

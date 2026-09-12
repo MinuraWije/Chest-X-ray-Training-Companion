@@ -1,0 +1,27 @@
+{
+  "attemptId": "test-attempt-1",
+  "likelyFinding": "Right apical pneumothorax",
+  "keySigns": "A thin visceral pleural line is visible in the right apex with absent lung markings peripheral to it. No mediastinal shift.",
+  "comparison": "Model primary: pneumothorax (confidence 83%). Rationale: A thin visceral pleural line is visible in the right apex with absent lung markings peripheral to it. No mediastinal shift.",
+  "missedClues": "Differentials considered: Apical bulla (10%), Skin fold (5%)",
+  "learningPoint": "On an erect PA film, small pneumothoraces are easiest to spot at the apex. Look carefully for the pleural line; expiratory films accentuate small PTX.",
+  "confidence": 0.83,
+  "sources": [],
+  "primary": {
+    "category": "pneumothorax",
+    "label": "Right apical pneumothorax",
+    "confidence": 0.83,
+    "rationale": "A thin visceral pleural line is visible in the right apex with absent lung markings peripheral to it. No mediastinal shift."
+  },
+  "keyObservations": "Thin white visceral pleural line in the right apex. Lung markings absent peripheral to the line. Costophrenic angles are sharp. No subcutaneous emphysema.",
+  "differentials": [
+    {
+      "label": "Apical bulla",
+      "confidence": 0.1
+    },
+    {
+      "label": "Skin fold",
+      "confidence": 0.05
+    }
+  ]
+}

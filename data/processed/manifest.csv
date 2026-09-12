@@ -1,0 +1,301 @@
+case_id,image_index,image_path,finding,label_source,split,nih_labels,patient_age,patient_sex,view_position
+case_929027c8,00000013_023,images/00000013_023.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_023.png,train,Infiltration|Mass|Pneumothorax,56,M,AP
+case_a2e69f38,00000013_030,images/00000013_030.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_030.png,train,Atelectasis|Cardiomegaly|Emphysema|Mass|Pneumothorax,56,M,AP
+case_dc9fde5c,00000013_032,images/00000013_032.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_032.png,train,Emphysema|Mass|Pneumothorax,56,M,AP
+case_399e523c,00000013_033,images/00000013_033.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_033.png,train,Pneumothorax,56,M,PA
+case_80c1badc,00000013_034,images/00000013_034.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_034.png,train,Emphysema|Pneumothorax,56,M,PA
+case_ad114811,00000013_035,images/00000013_035.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_035.png,train,Atelectasis|Pneumothorax,56,M,PA
+case_f4cf88ad,00000013_036,images/00000013_036.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_036.png,train,Pneumothorax,56,M,PA
+case_9b18d017,00000013_037,images/00000013_037.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_037.png,train,Cardiomegaly|Emphysema|Pneumothorax,56,M,PA
+case_b0851067,00000013_039,images/00000013_039.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_039.png,train,Pneumothorax,56,M,PA
+case_b13c5bb8,00000013_040,images/00000013_040.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_040.png,train,Cardiomegaly|Emphysema|Pneumothorax,56,M,PA
+case_c78d2b14,00000013_001,images/00000013_001.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_001.png,train,Emphysema|Pneumothorax,60,M,AP
+case_48b56622,00000013_002,images/00000013_002.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_002.png,train,Emphysema|Pneumothorax,60,M,AP
+case_c0182c11,00000013_004,images/00000013_004.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_004.png,train,Effusion|Emphysema|Infiltration|Pneumothorax,60,M,AP
+case_20fa75c1,00000013_005,images/00000013_005.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_005.png,train,Emphysema|Infiltration|Pleural_Thickening|Pneumothorax,60,M,AP
+case_d87d831d,00000013_010,images/00000013_010.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_010.png,train,Effusion|Pneumonia|Pneumothorax,60,M,AP
+case_6156669f,00000013_011,images/00000013_011.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_011.png,train,Pneumothorax,60,M,AP
+case_96bfcc76,00000013_012,images/00000013_012.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_012.png,val,Pneumothorax,60,M,AP
+case_2690ab29,00000013_013,images/00000013_013.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_013.png,test,Pneumothorax,60,M,AP
+case_c0f371ca,00000013_018,images/00000013_018.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_018.png,test,Effusion|Infiltration|Pneumothorax,60,M,AP
+case_a1e1669a,00000013_020,images/00000013_020.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_020.png,train,Pneumothorax,61,M,PA
+case_9575ca69,00000041_002,images/00000041_002.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000041_002.png,train,Emphysema|Pneumothorax,62,F,PA
+case_77a1ff6f,00000071_001,images/00000071_001.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000071_001.png,train,Pneumothorax,69,F,AP
+case_b1b6aa43,00000090_009,images/00000090_009.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000090_009.png,train,Pneumothorax,67,F,PA
+case_9560c9d8,00000103_001,images/00000103_001.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_001.png,train,Mass|Pneumothorax,59,M,PA
+case_4180f6ab,00000103_002,images/00000103_002.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_002.png,train,Mass|Pneumothorax,59,M,PA
+case_6b6b4c4c,00000103_003,images/00000103_003.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_003.png,train,Pneumothorax,59,M,PA
+case_83d6fd77,00000103_004,images/00000103_004.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_004.png,train,Mass|Pneumothorax,59,M,PA
+case_eb187564,00000103_005,images/00000103_005.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_005.png,train,Mass|Pneumothorax,59,M,PA
+case_c03db4f1,00000103_006,images/00000103_006.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_006.png,train,Pneumothorax,59,M,PA
+case_8af99d43,00000103_007,images/00000103_007.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_007.png,train,Mass|Pneumothorax,59,M,PA
+case_c7007a75,00000103_009,images/00000103_009.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_009.png,train,Mass|Pneumothorax,59,M,PA
+case_598edc1e,00000116_012,images/00000116_012.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_012.png,train,Pneumothorax,74,F,AP
+case_73ed6bc7,00000116_021,images/00000116_021.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_021.png,train,Effusion|Pneumothorax,74,F,AP
+case_717655c3,00000118_002,images/00000118_002.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_002.png,train,Emphysema|Pneumothorax,73,M,PA
+case_c96dcca6,00000118_003,images/00000118_003.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_003.png,train,Atelectasis|Emphysema|Pneumothorax,73,M,PA
+case_37104b4d,00000118_004,images/00000118_004.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_004.png,val,Emphysema|Pneumothorax,73,M,PA
+case_4187edab,00000118_005,images/00000118_005.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_005.png,train,Pneumothorax,73,M,PA
+case_4d6643fd,00000118_009,images/00000118_009.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_009.png,train,Pneumothorax,73,M,AP
+case_c5fc2052,00000118_010,images/00000118_010.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_010.png,train,Pneumothorax,73,M,PA
+case_189dbb55,00000118_011,images/00000118_011.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000118_011.png,train,Pneumothorax,73,M,PA
+case_56071440,00000211_019,images/00000211_019.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000211_019.png,train,Atelectasis|Cardiomegaly|Infiltration|Pneumothorax,59,F,AP
+case_9a3470ed,00000211_023,images/00000211_023.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000211_023.png,train,Pneumothorax,59,F,PA
+case_cc8871c9,00000218_006,images/00000218_006.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000218_006.png,train,Infiltration|Pneumothorax,33,M,PA
+case_4ab4a9eb,00000231_003,images/00000231_003.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000231_003.png,test,Pneumothorax,56,F,AP
+case_c165a098,00000231_011,images/00000231_011.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000231_011.png,test,Effusion|Pneumothorax,56,F,PA
+case_a11444ff,00000246_008,images/00000246_008.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000246_008.png,train,Pneumothorax,51,M,PA
+case_fa1ff8a1,00000246_012,images/00000246_012.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000246_012.png,train,Consolidation|Pneumothorax,51,M,PA
+case_2d18b2b9,00000246_013,images/00000246_013.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000246_013.png,test,Effusion|Infiltration|Pneumothorax,51,M,PA
+case_f2700046,00000261_004,images/00000261_004.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000261_004.png,test,Pneumothorax,39,F,AP
+case_44987573,00000275_003,images/00000275_003.png,pneumothorax,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000275_003.png,train,Pneumothorax,60,F,AP
+case_594482be,00000001_002,images/00000001_002.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000001_002.png,test,Cardiomegaly|Effusion,58,M,PA
+case_735b06fa,00000005_007,images/00000005_007.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_007.png,val,Effusion|Infiltration,70,F,PA
+case_213ff7c0,00000011_000,images/00000011_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_000.png,train,Effusion,74,M,PA
+case_52a7b259,00000012_000,images/00000012_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000012_000.png,train,Effusion|Mass,76,M,PA
+case_d872fc73,00000013_027,images/00000013_027.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_027.png,val,Cardiomegaly|Effusion|Emphysema|Mass,56,M,AP
+case_e6982eb4,00000013_028,images/00000013_028.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_028.png,test,Cardiomegaly|Effusion|Emphysema|Mass,56,M,AP
+case_73c2e6d2,00000013_029,images/00000013_029.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_029.png,train,Cardiomegaly|Effusion|Emphysema|Mass,56,M,AP
+case_5ecdeffd,00000013_006,images/00000013_006.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_006.png,train,Effusion|Infiltration,60,M,AP
+case_aa3e7d96,00000013_021,images/00000013_021.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_021.png,train,Effusion,61,M,PA
+case_bcc5b41b,00000017_000,images/00000017_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000017_000.png,train,Effusion|Infiltration|Nodule,77,M,PA
+case_e5a9c213,00000019_000,images/00000019_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000019_000.png,train,Atelectasis|Effusion|Pleural_Thickening,66,M,PA
+case_35b51329,00000023_002,images/00000023_002.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000023_002.png,test,Effusion|Infiltration,63,F,PA
+case_28801488,00000025_000,images/00000025_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000025_000.png,test,Effusion,71,M,PA
+case_3b66cdef,00000032_001,images/00000032_001.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_001.png,train,Cardiomegaly|Edema|Effusion,54,F,AP
+case_4b33d526,00000032_004,images/00000032_004.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_004.png,train,Cardiomegaly|Edema|Effusion,54,F,AP
+case_9f68a121,00000032_006,images/00000032_006.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_006.png,train,Atelectasis|Effusion|Infiltration,54,F,AP
+case_2508d7b9,00000032_007,images/00000032_007.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_007.png,test,Cardiomegaly|Edema|Effusion,54,F,AP
+case_987ac9a2,00000032_032,images/00000032_032.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_032.png,train,Cardiomegaly|Edema|Effusion|Infiltration,54,F,AP
+case_ce44a1ab,00000032_034,images/00000032_034.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_034.png,train,Atelectasis|Edema|Effusion|Infiltration,54,F,AP
+case_397b35be,00000032_035,images/00000032_035.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_035.png,train,Atelectasis|Edema|Effusion|Infiltration,54,F,AP
+case_c3d414a7,00000032_036,images/00000032_036.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_036.png,val,Atelectasis|Edema|Effusion|Infiltration,54,F,AP
+case_e7e9800e,00000032_041,images/00000032_041.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_041.png,train,Edema|Effusion|Infiltration|Nodule,54,F,AP
+case_14b2928d,00000032_045,images/00000032_045.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_045.png,train,Cardiomegaly|Edema|Effusion|Infiltration,54,F,AP
+case_1f8fb9fb,00000032_058,images/00000032_058.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_058.png,train,Edema|Effusion|Infiltration,54,F,AP
+case_a3f30cad,00000032_057,images/00000032_057.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_057.png,test,Edema|Effusion|Infiltration,54,F,AP
+case_b624e509,00000036_000,images/00000036_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000036_000.png,test,Effusion|Infiltration,81,M,PA
+case_9ae002f9,00000038_000,images/00000038_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000038_000.png,val,Cardiomegaly|Effusion,75,M,PA
+case_604a5e24,00000039_004,images/00000039_004.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000039_004.png,test,Effusion,75,M,PA
+case_fd6f35ad,00000041_006,images/00000041_006.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000041_006.png,val,Effusion,62,F,PA
+case_e84eee4e,00000044_000,images/00000044_000.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000044_000.png,train,Consolidation|Effusion|Infiltration,78,M,PA
+case_c02d4d75,00000047_006,images/00000047_006.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000047_006.png,test,Atelectasis|Effusion,73,F,PA
+case_80c74c94,00000056_001,images/00000056_001.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000056_001.png,train,Effusion,76,M,PA
+case_21c1fbcb,00000061_002,images/00000061_002.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_002.png,train,Effusion,77,M,PA
+case_384a5823,00000061_003,images/00000061_003.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_003.png,train,Effusion|Pleural_Thickening,77,M,PA
+case_4dd97eb5,00000061_004,images/00000061_004.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_004.png,train,Atelectasis|Effusion,77,M,AP
+case_d58aebb5,00000061_005,images/00000061_005.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_005.png,train,Effusion|Infiltration,77,M,AP
+case_c406bc32,00000061_006,images/00000061_006.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_006.png,train,Effusion,77,M,AP
+case_72ace1a1,00000061_007,images/00000061_007.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_007.png,train,Effusion,77,M,AP
+case_a2faa7f1,00000061_008,images/00000061_008.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_008.png,train,Effusion,77,M,AP
+case_d8fbca54,00000061_009,images/00000061_009.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_009.png,test,Effusion|Infiltration,77,M,AP
+case_d24d0b4c,00000061_010,images/00000061_010.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_010.png,val,Effusion|Infiltration,77,M,AP
+case_6949c36f,00000061_011,images/00000061_011.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_011.png,train,Effusion,77,M,AP
+case_5979b326,00000061_012,images/00000061_012.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_012.png,train,Edema|Effusion|Infiltration|Pleural_Thickening|Pneumonia,77,M,AP
+case_e22754ea,00000061_013,images/00000061_013.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_013.png,train,Effusion|Fibrosis,77,M,AP
+case_f24659bb,00000061_014,images/00000061_014.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_014.png,train,Effusion|Fibrosis,77,M,AP
+case_306e25e3,00000061_017,images/00000061_017.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_017.png,train,Edema|Effusion|Infiltration,77,M,AP
+case_4213cf14,00000061_020,images/00000061_020.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_020.png,train,Edema|Effusion,77,M,AP
+case_83f92828,00000061_023,images/00000061_023.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_023.png,train,Consolidation|Effusion|Infiltration|Mass,77,M,AP
+case_1aab3b75,00000061_025,images/00000061_025.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_025.png,train,Consolidation|Effusion|Infiltration|Nodule,77,M,AP
+case_4ffd4b28,00000071_002,images/00000071_002.png,pleural_effusion,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000071_002.png,train,Effusion,69,F,PA
+case_7b58d0c4,00000001_000,images/00000001_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000001_000.png,test,Cardiomegaly,57,M,PA
+case_8143961b,00000001_001,images/00000001_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000001_001.png,train,Cardiomegaly|Emphysema,58,M,PA
+case_cd296eb9,00000008_000,images/00000008_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000008_000.png,test,Cardiomegaly,68,F,PA
+case_c9d5f83f,00000013_025,images/00000013_025.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_025.png,val,Cardiomegaly|Infiltration|Mass|Nodule,56,M,PA
+case_2d3b3c40,00000013_026,images/00000013_026.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_026.png,val,Cardiomegaly|Emphysema,56,M,AP
+case_a3cfb562,00000013_044,images/00000013_044.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_044.png,train,Cardiomegaly|Mass|Pleural_Thickening,56,M,PA
+case_f9e9b2c4,00000013_045,images/00000013_045.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_045.png,train,Cardiomegaly,56,M,PA
+case_62678b3c,00000032_000,images/00000032_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_000.png,train,Cardiomegaly,54,F,AP
+case_a33c437b,00000032_021,images/00000032_021.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_021.png,train,Cardiomegaly,54,F,AP
+case_9d8b07c6,00000032_027,images/00000032_027.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_027.png,train,Cardiomegaly|Consolidation,54,F,AP
+case_4c2e0669,00000032_028,images/00000032_028.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_028.png,train,Cardiomegaly|Infiltration,54,F,AP
+case_e7c23389,00000032_029,images/00000032_029.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_029.png,train,Cardiomegaly,54,F,AP
+case_4ed51797,00000032_030,images/00000032_030.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_030.png,val,Cardiomegaly|Consolidation,54,F,AP
+case_8f02d66b,00000032_031,images/00000032_031.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_031.png,val,Cardiomegaly|Infiltration,54,F,AP
+case_3f37d81f,00000032_037,images/00000032_037.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_037.png,train,Cardiomegaly|Edema|Infiltration,54,F,AP
+case_db84ae59,00000032_040,images/00000032_040.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_040.png,train,Cardiomegaly|Edema,54,F,AP
+case_a9d81dd1,00000032_044,images/00000032_044.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_044.png,train,Cardiomegaly|Edema,54,F,AP
+case_196770fb,00000032_053,images/00000032_053.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_053.png,train,Cardiomegaly,54,F,AP
+case_24f41c12,00000032_055,images/00000032_055.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_055.png,test,Cardiomegaly,54,F,AP
+case_1ec3964e,00000032_056,images/00000032_056.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_056.png,train,Cardiomegaly,54,F,AP
+case_020c3443,00000032_059,images/00000032_059.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_059.png,test,Cardiomegaly|Infiltration,54,F,AP
+case_702c71db,00000032_060,images/00000032_060.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_060.png,train,Cardiomegaly|Edema,54,F,AP
+case_5c5969b9,00000033_000,images/00000033_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000033_000.png,train,Atelectasis|Cardiomegaly|Fibrosis,72,F,PA
+case_382684ef,00000038_003,images/00000038_003.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000038_003.png,test,Cardiomegaly,76,M,AP
+case_e18bae1a,00000044_002,images/00000044_002.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000044_002.png,train,Cardiomegaly,78,M,PA
+case_5bb903d5,00000045_000,images/00000045_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000045_000.png,train,Cardiomegaly,70,F,PA
+case_19537926,00000069_000,images/00000069_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000069_000.png,train,Cardiomegaly,77,F,PA
+case_d2baa767,00000075_000,images/00000075_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000075_000.png,train,Cardiomegaly,61,F,PA
+case_1b88011e,00000075_001,images/00000075_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000075_001.png,train,Cardiomegaly,61,F,PA
+case_36c76119,00000077_000,images/00000077_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000077_000.png,val,Cardiomegaly,60,M,PA
+case_016c4fa1,00000096_000,images/00000096_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000096_000.png,train,Cardiomegaly,67,F,PA
+case_6df65547,00000096_001,images/00000096_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000096_001.png,train,Atelectasis|Cardiomegaly|Fibrosis,67,F,AP
+case_81df9c97,00000116_000,images/00000116_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_000.png,train,Cardiomegaly,73,F,PA
+case_d10753fb,00000116_013,images/00000116_013.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_013.png,test,Cardiomegaly|Consolidation,74,F,AP
+case_56f59536,00000116_016,images/00000116_016.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_016.png,test,Cardiomegaly,74,F,AP
+case_b6fbfd9b,00000116_031,images/00000116_031.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_031.png,train,Cardiomegaly|Consolidation,74,F,AP
+case_3cbea870,00000116_032,images/00000116_032.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_032.png,train,Cardiomegaly|Consolidation,74,F,AP
+case_16a40597,00000116_040,images/00000116_040.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000116_040.png,train,Cardiomegaly|Consolidation,74,F,AP
+case_a87ae1b6,00000123_000,images/00000123_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000123_000.png,train,Cardiomegaly|Emphysema,50,M,PA
+case_e4e507bb,00000124_000,images/00000124_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000124_000.png,test,Cardiomegaly|Infiltration,69,M,PA
+case_87bcc9a7,00000128_000,images/00000128_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000128_000.png,val,Cardiomegaly|Nodule,66,F,PA
+case_65e5e9ef,00000131_002,images/00000131_002.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000131_002.png,train,Cardiomegaly|Emphysema,54,M,PA
+case_37e958e9,00000131_001,images/00000131_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000131_001.png,train,Cardiomegaly,65,M,PA
+case_d62e55ed,00000155_000,images/00000155_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000155_000.png,test,Cardiomegaly,58,F,PA
+case_c6ac1a5c,00000156_000,images/00000156_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000156_000.png,train,Cardiomegaly|Infiltration,81,M,AP
+case_37dd25fb,00000176_001,images/00000176_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000176_001.png,train,Cardiomegaly,74,F,PA
+case_4f880fe6,00000176_002,images/00000176_002.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000176_002.png,train,Atelectasis|Cardiomegaly|Fibrosis,77,F,PA
+case_9d06ea42,00000200_001,images/00000200_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000200_001.png,test,Cardiomegaly,76,M,PA
+case_f030001f,00000211_000,images/00000211_000.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000211_000.png,train,Cardiomegaly,55,F,PA
+case_2fad5316,00000211_001,images/00000211_001.png,cardiomegaly,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000211_001.png,test,Cardiomegaly,56,F,PA
+case_1e6474f7,00000003_003,images/00000003_003.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_003.png,train,Hernia|Infiltration,76,F,PA
+case_50a31715,00000005_006,images/00000005_006.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_006.png,test,Infiltration,70,F,PA
+case_26c85824,00000010_000,images/00000010_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000010_000.png,val,Infiltration,84,F,PA
+case_1ebf3a07,00000011_005,images/00000011_005.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_005.png,train,Infiltration,75,M,AP
+case_57e05be4,00000011_007,images/00000011_007.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_007.png,train,Infiltration,75,M,PA
+case_191b5f25,00000013_022,images/00000013_022.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_022.png,test,Infiltration|Mass,56,M,PA
+case_1cf40678,00000013_046,images/00000013_046.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_046.png,train,Infiltration,56,M,PA
+case_794e22dd,00000013_007,images/00000013_007.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_007.png,test,Infiltration,60,M,AP
+case_2247d895,00000020_001,images/00000020_001.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000020_001.png,train,Fibrosis|Infiltration,47,M,PA
+case_86f445d5,00000020_002,images/00000020_002.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000020_002.png,train,Fibrosis|Infiltration|Pleural_Thickening,48,M,PA
+case_6d5fa64c,00000021_001,images/00000021_001.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000021_001.png,train,Infiltration,80,M,PA
+case_70ef5da7,00000023_004,images/00000023_004.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000023_004.png,test,Infiltration|Mass|Nodule,63,F,PA
+case_e29f5423,00000026_000,images/00000026_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000026_000.png,val,Infiltration,68,M,PA
+case_dfdd3a6e,00000032_011,images/00000032_011.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_011.png,train,Infiltration,54,F,AP
+case_ba00e10b,00000032_012,images/00000032_012.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_012.png,train,Atelectasis|Consolidation|Edema|Pneumonia,54,F,AP
+case_434e7f0b,00000032_014,images/00000032_014.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_014.png,train,Infiltration,54,F,AP
+case_24f27321,00000032_013,images/00000032_013.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_013.png,train,Infiltration,54,F,AP
+case_c5a1dd24,00000032_015,images/00000032_015.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_015.png,train,Infiltration,54,F,AP
+case_e61bb932,00000032_016,images/00000032_016.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_016.png,val,Consolidation,54,F,AP
+case_546e897e,00000032_017,images/00000032_017.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_017.png,train,Infiltration,54,F,AP
+case_0c314734,00000032_018,images/00000032_018.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_018.png,test,Infiltration,54,F,AP
+case_04db6c05,00000032_023,images/00000032_023.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_023.png,train,Edema|Infiltration,54,F,AP
+case_e938f397,00000032_026,images/00000032_026.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_026.png,train,Infiltration,54,F,AP
+case_57b2eb16,00000032_033,images/00000032_033.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_033.png,train,Infiltration,54,F,AP
+case_fd1a4d0f,00000032_038,images/00000032_038.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_038.png,train,Consolidation|Infiltration,54,F,AP
+case_a9714311,00000032_039,images/00000032_039.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_039.png,train,Consolidation|Edema,54,F,AP
+case_2c4a5040,00000032_043,images/00000032_043.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_043.png,train,Consolidation|Infiltration,54,F,AP
+case_b5fc9ff8,00000032_047,images/00000032_047.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_047.png,train,Infiltration,54,F,AP
+case_ebab5a99,00000032_050,images/00000032_050.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_050.png,train,Atelectasis|Edema|Infiltration,54,F,AP
+case_b53149f1,00000032_052,images/00000032_052.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000032_052.png,test,Atelectasis|Edema|Infiltration,54,F,AP
+case_dbdca6de,00000038_001,images/00000038_001.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000038_001.png,train,Atelectasis|Infiltration,75,M,PA
+case_1f513c1c,00000038_006,images/00000038_006.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000038_006.png,train,Atelectasis|Infiltration,76,M,PA
+case_7e263ede,00000040_003,images/00000040_003.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000040_003.png,train,Consolidation|Mass,67,M,PA
+case_ab3bde6a,00000041_000,images/00000041_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000041_000.png,train,Emphysema|Infiltration,62,F,PA
+case_4ea37fdb,00000042_006,images/00000042_006.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000042_006.png,train,Infiltration,71,M,AP
+case_4c1a40b9,00000043_000,images/00000043_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000043_000.png,train,Infiltration,66,M,PA
+case_38330bf8,00000044_001,images/00000044_001.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000044_001.png,test,Infiltration|Pleural_Thickening,78,M,PA
+case_e64c4a01,00000051_000,images/00000051_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000051_000.png,train,Infiltration,55,M,PA
+case_8291dcc6,00000053_000,images/00000053_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000053_000.png,val,Fibrosis|Infiltration|Nodule,71,M,PA
+case_92867e93,00000053_001,images/00000053_001.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000053_001.png,val,Atelectasis|Infiltration,71,M,AP
+case_7f8c75de,00000054_006,images/00000054_006.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000054_006.png,val,Infiltration,65,F,PA
+case_20ce1b92,00000054_000,images/00000054_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000054_000.png,test,Infiltration,71,F,PA
+case_a89c1fea,00000056_000,images/00000056_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000056_000.png,train,Nodule|Pneumonia,76,M,PA
+case_e6b46fdc,00000057_004,images/00000057_004.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000057_004.png,test,Infiltration,70,M,PA
+case_5a339be4,00000057_002,images/00000057_002.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000057_002.png,train,Atelectasis|Infiltration,71,M,PA
+case_503c4232,00000058_000,images/00000058_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000058_000.png,val,Atelectasis|Infiltration,44,F,PA
+case_45973a43,00000061_000,images/00000061_000.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_000.png,train,Infiltration|Nodule,77,M,PA
+case_85961712,00000061_015,images/00000061_015.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_015.png,train,Pneumonia,77,M,AP
+case_73585e4d,00000061_018,images/00000061_018.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_018.png,train,Infiltration,77,M,AP
+case_b7bcf83f,00000061_024,images/00000061_024.png,consolidation,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_024.png,val,Infiltration,77,M,AP
+case_85d10e8d,00000004_000,images/00000004_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000004_000.png,test,Mass|Nodule,82,M,AP
+case_a066eb5a,00000008_002,images/00000008_002.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000008_002.png,train,Nodule,72,F,PA
+case_32b1d0b7,00000013_024,images/00000013_024.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_024.png,train,Mass,56,M,AP
+case_7dc2a902,00000013_031,images/00000013_031.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_031.png,test,Emphysema|Mass,56,M,AP
+case_291e0a51,00000013_043,images/00000013_043.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_043.png,train,Mass|Pleural_Thickening,56,M,PA
+case_eaacf99b,00000021_000,images/00000021_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000021_000.png,train,Nodule,77,M,PA
+case_6c9c8693,00000049_000,images/00000049_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000049_000.png,train,Nodule,91,F,PA
+case_42af7bf7,00000061_001,images/00000061_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000061_001.png,train,Mass,77,M,PA
+case_e113f528,00000071_000,images/00000071_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000071_000.png,train,Nodule,69,F,PA
+case_ba6a444a,00000071_004,images/00000071_004.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000071_004.png,train,Nodule,69,F,PA
+case_3e1b13e7,00000071_008,images/00000071_008.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000071_008.png,train,Mass,69,F,PA
+case_47a9db69,00000079_000,images/00000079_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000079_000.png,train,Mass,62,M,PA
+case_ab41df36,00000091_001,images/00000091_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000091_001.png,train,Nodule,69,M,AP
+case_551cd195,00000091_003,images/00000091_003.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000091_003.png,train,Mass,69,M,PA
+case_fdfd0a2a,00000093_000,images/00000093_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000093_000.png,train,Nodule,74,M,PA
+case_40b8e38c,00000093_001,images/00000093_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000093_001.png,train,Nodule,75,M,PA
+case_d959f14e,00000101_000,images/00000101_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000101_000.png,val,Nodule,33,M,PA
+case_ca5034d8,00000103_000,images/00000103_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_000.png,train,Mass,59,M,PA
+case_e33483fc,00000103_008,images/00000103_008.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_008.png,train,Mass,59,M,PA
+case_9bece2dc,00000103_010,images/00000103_010.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_010.png,train,Atelectasis|Mass,59,M,PA
+case_27fce5d2,00000103_011,images/00000103_011.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000103_011.png,test,Atelectasis|Mass,59,M,PA
+case_0cac61e0,00000105_004,images/00000105_004.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000105_004.png,train,Nodule,52,M,PA
+case_d90f3cb8,00000105_005,images/00000105_005.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000105_005.png,train,Nodule,54,M,PA
+case_52553fbc,00000138_004,images/00000138_004.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000138_004.png,val,Nodule,65,F,PA
+case_d8d08b38,00000157_000,images/00000157_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000157_000.png,train,Nodule,39,F,PA
+case_aac97639,00000164_000,images/00000164_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000164_000.png,train,Nodule,69,M,PA
+case_0971b0ec,00000165_007,images/00000165_007.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000165_007.png,train,Nodule,77,M,PA
+case_c4f0d221,00000174_002,images/00000174_002.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000174_002.png,train,Nodule,72,F,PA
+case_89efd711,00000174_005,images/00000174_005.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000174_005.png,train,Nodule,77,F,PA
+case_8c9f7bf3,00000199_002,images/00000199_002.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000199_002.png,test,Fibrosis|Nodule,45,F,PA
+case_db6fe768,00000199_005,images/00000199_005.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000199_005.png,val,Nodule,50,F,PA
+case_1ea3d8de,00000200_000,images/00000200_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000200_000.png,train,Nodule,75,M,PA
+case_73aa506c,00000204_001,images/00000204_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000204_001.png,train,Fibrosis|Nodule,27,M,PA
+case_4ec0fd18,00000204_002,images/00000204_002.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000204_002.png,train,Nodule|Pleural_Thickening,28,M,PA
+case_c8b32a93,00000204_005,images/00000204_005.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000204_005.png,train,Fibrosis|Nodule,33,M,PA
+case_8d74b59a,00000232_001,images/00000232_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000232_001.png,train,Fibrosis|Nodule|Pleural_Thickening,46,M,PA
+case_faf3c2c1,00000248_000,images/00000248_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_000.png,train,Emphysema|Mass,87,M,PA
+case_f0406508,00000248_013,images/00000248_013.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_013.png,val,Mass,87,M,AP
+case_ae5030f7,00000248_015,images/00000248_015.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_015.png,train,Mass,87,M,AP
+case_94bb26ff,00000248_016,images/00000248_016.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_016.png,train,Mass,87,M,AP
+case_e33ea404,00000248_018,images/00000248_018.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_018.png,train,Mass,87,M,AP
+case_f206ddd4,00000248_017,images/00000248_017.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_017.png,train,Mass,87,M,PA
+case_8e2ee3e2,00000248_023,images/00000248_023.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_023.png,train,Mass,87,M,AP
+case_4bec1c22,00000248_024,images/00000248_024.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000248_024.png,train,Mass,87,M,AP
+case_2e83836c,00000250_001,images/00000250_001.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000250_001.png,val,Atelectasis|Nodule,49,M,AP
+case_3eae9e81,00000250_003,images/00000250_003.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000250_003.png,train,Nodule,49,M,AP
+case_b9d4fcf9,00000250_004,images/00000250_004.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000250_004.png,train,Mass,49,M,PA
+case_2f80a1b5,00000250_015,images/00000250_015.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000250_015.png,train,Mass,52,M,PA
+case_2130c656,00000275_000,images/00000275_000.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000275_000.png,train,Nodule,60,F,PA
+case_ceb7128b,00000278_008,images/00000278_008.png,nodule_or_mass,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000278_008.png,train,Fibrosis|Mass,54,M,PA
+case_ccdd408d,00000002_000,images/00000002_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000002_000.png,val,No Finding,80,M,PA
+case_4c577668,00000003_001,images/00000003_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_001.png,train,Hernia,74,F,PA
+case_dd9b19d0,00000003_002,images/00000003_002.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_002.png,train,Hernia,75,F,PA
+case_5ba056c5,00000003_004,images/00000003_004.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_004.png,train,Hernia,77,F,PA
+case_2d019e5e,00000003_005,images/00000003_005.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_005.png,val,Hernia,78,F,PA
+case_80c556bc,00000003_006,images/00000003_006.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_006.png,train,Hernia,79,F,PA
+case_b344755d,00000003_007,images/00000003_007.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_007.png,train,Hernia,80,F,PA
+case_62efeeee,00000003_000,images/00000003_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000003_000.png,train,Hernia,81,F,PA
+case_1321d9f9,00000005_000,images/00000005_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_000.png,train,No Finding,69,F,PA
+case_dada053b,00000005_001,images/00000005_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_001.png,train,No Finding,69,F,AP
+case_92f30984,00000005_002,images/00000005_002.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_002.png,train,No Finding,69,F,AP
+case_b4e08d8c,00000005_003,images/00000005_003.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_003.png,train,No Finding,69,F,PA
+case_245d745a,00000005_004,images/00000005_004.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_004.png,test,No Finding,70,F,PA
+case_3f99e04a,00000005_005,images/00000005_005.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000005_005.png,train,No Finding,70,F,PA
+case_f9441246,00000006_000,images/00000006_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000006_000.png,train,No Finding,81,M,PA
+case_b26a2d20,00000007_000,images/00000007_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000007_000.png,test,No Finding,82,M,PA
+case_ab4e7fc5,00000008_001,images/00000008_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000008_001.png,train,No Finding,70,F,PA
+case_5bd2a6f8,00000009_000,images/00000009_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000009_000.png,train,Emphysema,72,M,PA
+case_63936168,00000011_001,images/00000011_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_001.png,train,No Finding,74,M,PA
+case_4213b73c,00000011_002,images/00000011_002.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_002.png,val,No Finding,75,M,PA
+case_27ecc4eb,00000011_003,images/00000011_003.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_003.png,val,No Finding,75,M,PA
+case_46852794,00000011_004,images/00000011_004.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_004.png,train,No Finding,75,M,PA
+case_f22efa13,00000011_006,images/00000011_006.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_006.png,train,Atelectasis,75,M,PA
+case_0df6cbe9,00000011_008,images/00000011_008.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000011_008.png,train,No Finding,75,M,PA
+case_4989ea52,00000013_038,images/00000013_038.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_038.png,train,No Finding,56,M,PA
+case_b4330cbf,00000013_042,images/00000013_042.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_042.png,train,Emphysema,56,M,PA
+case_9516cddb,00000013_041,images/00000013_041.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_041.png,train,Emphysema,56,M,PA
+case_d699691f,00000013_000,images/00000013_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_000.png,test,No Finding,60,M,PA
+case_3713b492,00000013_003,images/00000013_003.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_003.png,train,Pleural_Thickening,60,M,AP
+case_7451aedb,00000013_008,images/00000013_008.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_008.png,train,No Finding,60,M,AP
+case_aca78b89,00000013_009,images/00000013_009.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_009.png,val,Pleural_Thickening,60,M,AP
+case_9cc513fc,00000013_014,images/00000013_014.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_014.png,train,No Finding,60,M,PA
+case_05f3d93d,00000013_015,images/00000013_015.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_015.png,train,No Finding,60,M,PA
+case_e0176f7b,00000013_016,images/00000013_016.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_016.png,train,No Finding,60,M,PA
+case_17e26929,00000013_017,images/00000013_017.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_017.png,train,No Finding,60,M,PA
+case_4e4bcf17,00000013_019,images/00000013_019.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000013_019.png,val,No Finding,61,M,PA
+case_5b82b652,00000014_000,images/00000014_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000014_000.png,train,No Finding,60,F,PA
+case_5b5180fb,00000015_000,images/00000015_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000015_000.png,val,No Finding,70,M,AP
+case_d8a0b7a9,00000016_000,images/00000016_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000016_000.png,train,No Finding,71,M,PA
+case_2402731c,00000017_001,images/00000017_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000017_001.png,test,No Finding,77,M,AP
+case_be29f081,00000017_002,images/00000017_002.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000017_002.png,train,No Finding,77,M,AP
+case_172831f5,00000018_000,images/00000018_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000018_000.png,train,No Finding,75,M,PA
+case_33e80bd2,00000020_000,images/00000020_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000020_000.png,train,Pleural_Thickening,53,M,PA
+case_936c8c79,00000022_000,images/00000022_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000022_000.png,train,No Finding,47,M,PA
+case_76a231fb,00000022_001,images/00000022_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000022_001.png,train,Fibrosis,48,M,PA
+case_1be34754,00000023_000,images/00000023_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000023_000.png,test,No Finding,63,F,PA
+case_f1581f3a,00000023_001,images/00000023_001.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000023_001.png,train,No Finding,63,F,AP
+case_e24723a2,00000023_003,images/00000023_003.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000023_003.png,train,No Finding,63,F,PA
+case_4a753240,00000024_000,images/00000024_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000024_000.png,train,Fibrosis,52,M,PA
+case_af61a3c5,00000027_000,images/00000027_000.png,no_finding,local:D:\Cinec Projects\Chest X-ray Training Companion\Dataset\images\00000027_000.png,train,Emphysema,73,M,PA
