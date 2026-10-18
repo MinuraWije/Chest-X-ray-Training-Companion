@@ -10,7 +10,8 @@ phase rests on. The script therefore runs all arms in sequence by default
 rather than offering a one-arm-at-a-time mode as the happy path.
 
 `p3.0-empty` is always run, even when `--arms` narrows the set, because the
-confabulation metric is defined as a difference against it.
+confabulation rate with no passages supplied is the baseline the
+other arms are read against.
 """
 from __future__ import annotations
 
@@ -19,7 +20,6 @@ import json
 import logging
 import os
 import sys
-from dataclasses import replace
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -36,7 +36,6 @@ from cxt.infrastructure.data.manifest_repository import ManifestRepository  # no
 from cxt.infrastructure.eval.feedback_eval import (  # noqa: E402
     CONTROL_ARM,
     FEEDBACK_ARMS,
-    compute_confabulation_rate,
     load_attempt_fixtures,
     render_feedback_summary,
     resolve_feedback_arm,
@@ -118,8 +117,9 @@ def main(argv: list[str] | None = None) -> int:
     corpus = load_corpus(settings.corpus_dir)
     analyzer, image_loader = _build_analyzer(settings, warm=not args.no_warmup)
 
-    # The control is always run: confabulation is defined as a difference
-    # against it, so narrowing the arms must not silently drop the baseline.
+    # The control is always run. Every arm computes its own confabulation rate,
+    # but that number only means something beside the rate with no passages
+    # supplied at all, so narrowing the arms must not drop the baseline.
     arm_names = list(dict.fromkeys([*args.arms, CONTROL_ARM]))
     logger.info(
         "Arms: %s | cases: %d | fixtures: %d | corpus: %s",
@@ -128,6 +128,33 @@ def main(argv: list[str] | None = None) -> int:
         len(fixtures),
         corpus.version,
     )
+
+    out_path = Path(args.out)
+    if not out_path.is_absolute():
+        out_path = REPO_ROOT / out_path
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    # A full run is five arms over about 75 minutes on a Kaggle session that
+    # can be reclaimed at any point. Without this, a failure in the last arm
+    # discards the four that already succeeded and the whole hour is spent
+    # again. Each completed arm is written here; the partial is removed only
+    # once the real report exists, and `--arms` can then re-run just what is
+    # missing.
+    partial_path = out_path.with_name(out_path.stem + ".partial.json")
+
+    def _payload(done: list) -> str:  # type: ignore[type-arg]
+        return (
+            json.dumps(
+                {
+                    "corpus_version": corpus.version,
+                    "split": args.split,
+                    "max_cases": args.max_cases,
+                    "control_arm": CONTROL_ARM,
+                    "arms": [r.to_dict() for r in done],
+                },
+                indent=2,
+            )
+            + "\n"
+        )
 
     reports = []
     for name in arm_names:
@@ -144,41 +171,24 @@ def main(argv: list[str] | None = None) -> int:
                 max_cases=args.max_cases,
             )
         )
-
-    control = next((r for r in reports if r.arm == CONTROL_ARM), None)
-    if control is not None:
-        reports = [
-            replace(r, confabulation_rate=compute_confabulation_rate(r, control))
-            if r.retrieval_mode != "null"
-            else r
-            for r in reports
-        ]
+        partial_path.write_text(_payload(reports), encoding="utf-8")
+        logger.info(
+            "Arm %s done (%d/%d). Checkpoint written to %s",
+            name,
+            len(reports),
+            len(arm_names),
+            partial_path.name,
+        )
 
     # Restore the order the user asked for; the control runs regardless but
     # should not jump the queue in the report.
     order = {name: i for i, name in enumerate(arm_names)}
     reports.sort(key=lambda r: order.get(r.arm, 99))
 
-    out_path = Path(args.out)
-    if not out_path.is_absolute():
-        out_path = REPO_ROOT / out_path
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(
-        json.dumps(
-            {
-                "corpus_version": corpus.version,
-                "split": args.split,
-                "max_cases": args.max_cases,
-                "control_arm": CONTROL_ARM,
-                "arms": [r.to_dict() for r in reports],
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    out_path.write_text(_payload(reports), encoding="utf-8")
     summary = render_feedback_summary(reports)
     out_path.with_suffix(".md").write_text(summary + "\n", encoding="utf-8")
+    partial_path.unlink(missing_ok=True)
     print("\n" + summary)
     print(f"\nWrote {out_path} and {out_path.with_suffix('.md')}")
     return 0

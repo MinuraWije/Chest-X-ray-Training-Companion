@@ -289,10 +289,18 @@ def validate_proxy(pairs: tuple[LabelledPair, ...]) -> ProxyAgreement:
     )
 
 
-def render_agreement_summary(result: ProxyAgreement) -> str:
+def render_agreement_summary(result: ProxyAgreement, judge: str = "Human") -> str:
+    """`judge` names whoever produced the labels.
+
+    It is a parameter rather than the literal "Human" because a sheet labelled
+    any other way must not render a table that says a person made the calls —
+    this file is pasted into the report, and that header would be the sentence
+    that misleads a reader.
+    """
     lines = [
         "# Relevance proxy validation",
         "",
+        f"- Labels produced by: **{judge}**",
         f"- Pairs exported: **{result.total_pairs}**",
         f"- Labelled: **{result.labelled}** ({result.unsure} unsure, excluded)",
         f"- Raw agreement: **{result.agreement:.0%}** of {result.decisive} decisive pairs",
@@ -312,16 +320,16 @@ def render_agreement_summary(result: ProxyAgreement) -> str:
         [
             "## Where they disagree",
             "",
-            "| | Human: relevant | Human: not relevant |",
+            f"| | {judge}: relevant | {judge}: not relevant |",
             "|---|---|---|",
             f"| **Proxy: relevant** | {result.both_relevant} | {result.proxy_only} |",
             f"| **Proxy: not relevant** | {result.human_only} | {result.both_irrelevant} |",
             "",
-            f"- **{result.proxy_only}** pairs the tag overlap called relevant and a "
-            "human did not — chunks on the right topic that would not help this "
-            "student. This is the proxy's expected failure mode.",
-            f"- **{result.human_only}** pairs a human called relevant and the tags "
-            "missed — usually a chunk addressing the student's confusion whose "
+            f"- **{result.proxy_only}** pairs the tag overlap called relevant and "
+            f"{judge.lower()} did not — chunks on the right topic that would not "
+            "help this student. This is the proxy's expected failure mode.",
+            f"- **{result.human_only}** pairs {judge.lower()} called relevant and the "
+            "tags missed — usually a chunk addressing the student's confusion whose "
             "`findings` tags do not name the confirmed category.",
             "",
             "## By aspect",

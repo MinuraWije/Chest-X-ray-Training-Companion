@@ -1,0 +1,37 @@
+{
+  "total_pairs": 150,
+  "labelled": 150,
+  "unsure": 22,
+  "decisive": 128,
+  "agreement": 0.8047,
+  "cohens_kappa": 0.6159,
+  "quotable": true,
+  "confusion": {
+    "both_relevant": 56,
+    "both_irrelevant": 47,
+    "proxy_relevant_human_not": 22,
+    "human_relevant_proxy_not": 3
+  },
+  "by_aspect": {
+    "radiographic_sign": {
+      "agree": 39,
+      "of": 45
+    },
+    "pitfall": {
+      "agree": 31,
+      "of": 40
+    },
+    "technique": {
+      "agree": 8,
+      "of": 12
+    },
+    "differential": {
+      "agree": 24,
+      "of": 29
+    },
+    "management": {
+      "agree": 1,
+      "of": 2
+    }
+  }
+}

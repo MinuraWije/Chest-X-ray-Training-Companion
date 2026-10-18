@@ -17,9 +17,16 @@ reports it produced, Phase 2 adds this one and leaves that one alone.
 | `p3.0-misconception` | p3.0 | free text + boost | |
 
 `p3.0-empty` is not optional. It attributes the prompt change separately from
-retrieval, and it is the baseline the confabulation metric subtracts against —
-without it, "the RAG arm asserted a feature that was in a passage" cannot be
-distinguished from "this model asserts that feature anyway".
+retrieval, and it is the baseline every other arm is read against: it gives the
+confabulation rate when no passages are supplied at all, which is the number
+retrieval has to beat before grounding can be claimed.
+
+## What confabulation means here
+
+A finding the feedback names that neither the case nor any supplied passage
+supports. It is computed within an arm, from the feedback text alone — see
+`_unsupported_findings`, which also records why the earlier
+vocabulary-difference definition was withdrawn.
 
 ## Two metrics that must be read as a pair
 
@@ -83,6 +90,7 @@ __all__ = [
     "FeedbackEvalReport",
     "StudentAttemptFixture",
     "load_attempt_fixtures",
+    "plan_pairs",
     "resolve_feedback_arm",
     "run_feedback_evaluation",
     "render_feedback_summary",
@@ -132,7 +140,8 @@ FEEDBACK_ARMS: Final[dict[str, FeedbackArm]] = {
     "p3.0-misconception": FeedbackArm("p3.0-misconception", "p3.0", "misconception"),
 }
 
-#: The arm every confabulation figure is measured against.
+#: The no-retrieval baseline every other arm's confabulation rate is read
+#: against. Not an input to that figure — each arm computes its own.
 CONTROL_ARM: Final[str] = "p3.0-empty"
 
 
@@ -231,7 +240,14 @@ class FeedbackSample:
     relevant_at_k: int = 0
     scored_at_k: int = 0
     abstained: bool = False
+    #: Vocabulary the feedback took from a supplied passage. Retained as a
+    #: grounding signal and because it is already persisted in past reports; it
+    #: is no longer what confabulation is computed from. See
+    #: `_unsupported_findings`.
     asserted_features: tuple[str, ...] = field(default_factory=tuple)
+    #: Findings the feedback named that neither the case nor any supplied
+    #: passage supports. Non-empty means this sample confabulated.
+    unsupported_findings: tuple[str, ...] = field(default_factory=tuple)
     lexical_overlap: float = 0.0
     shuffled_overlap: float = 0.0
     model: str = ""
@@ -250,6 +266,12 @@ class FeedbackSample:
             "latency_ms": round(self.latency_ms, 1),
             "retrieval_latency_ms": round(self.retrieval_latency_ms, 2),
             "prompt_chars": self.prompt_chars,
+            # Persisted so every derived metric can be recomputed from the
+            # report alone. Without the feedback text a metric bug costs a
+            # fresh GPU run to fix, which is how one shipped.
+            "feedback_text": self.feedback_text,
+            "asserted_features": list(self.asserted_features),
+            "unsupported_findings": list(self.unsupported_findings),
             "retrieved_ids": list(self.retrieved_ids),
             "cited_indices": list(self.cited_indices),
             "hallucinated_indices": list(self.hallucinated_indices),
@@ -271,7 +293,6 @@ class FeedbackEvalReport:
     corpus_version: str
     model: str
     samples: tuple[FeedbackSample, ...] = field(default_factory=tuple)
-    confabulation_rate: float | None = None
     control_arm: str = ""
 
     # -- counts -----------------------------------------------------------
@@ -355,6 +376,21 @@ class FeedbackEvalReport:
     def overlap_lift(self) -> float:
         return self.mean_lexical_overlap - self.mean_shuffled_overlap
 
+    @property
+    def confabulation_rate(self) -> float:
+        """Share of feedbacks naming a finding nothing supports.
+
+        Computed within the arm, not against a control: an unsupported
+        assertion is unsupported whether or not some other arm made it too.
+        The control arm keeps its value as the comparison every arm is read
+        against — `p3.0-empty` is the rate when no passages are supplied at
+        all, and the claim retrieval has to earn is a rate below it.
+        """
+        eligible = [s for s in self.succeeded if not s.abstained]
+        if not eligible:
+            return 0.0
+        return sum(1 for s in eligible if s.unsupported_findings) / len(eligible)
+
     # -- cost -------------------------------------------------------------
     @property
     def median_latency_ms(self) -> float:
@@ -397,11 +433,7 @@ class FeedbackEvalReport:
                 "lexical_overlap": round(self.mean_lexical_overlap, 4),
                 "shuffled_control": round(self.mean_shuffled_overlap, 4),
                 "lift": round(self.overlap_lift, 4),
-                "confabulation_rate": (
-                    None
-                    if self.confabulation_rate is None
-                    else round(self.confabulation_rate, 4)
-                ),
+                "confabulation_rate": round(self.confabulation_rate, 4),
             },
             "cost": {
                 "median_latency_ms": round(self.median_latency_ms, 1),
@@ -421,6 +453,68 @@ def _feedback_prose(feedback: Feedback) -> str:
     if feedback.key_observations is not None:
         parts.append(feedback.key_observations.value)
     return "\n".join(parts)
+
+
+#: `OutputParser` synthesises the `comparison` field as
+#: "Model primary: <category> (confidence N%). Rationale: <rationale>". Those
+#: words are the harness talking, not the model asserting anything, and
+#: `primary` turned up in a sample's imported vocabulary because a corpus
+#: passage happens to use it. Stripped before any vocabulary analysis; the
+#: rationale that follows is kept, because that is the model's own text.
+_SCAFFOLDING = re.compile(r"Model primary: .*?\(confidence \d+%\)\. Rationale: ", re.DOTALL)
+
+
+def _analysis_prose(prose: str) -> str:
+    """`prose` with the parser's own scaffolding removed.
+
+    Used for overlap and for finding detection. Citation scanning deliberately
+    runs on the unstripped text instead: a `[S1]` the model wrote inside its
+    rationale is a real citation and must still be counted.
+    """
+    return _SCAFFOLDING.sub("", prose)
+
+
+def _unsupported_findings(
+    prose: str, passages: Sequence[RetrievedPassage], case: Case, corpus: Corpus | None
+) -> tuple[str, ...]:
+    """Findings the feedback names that nothing supports.
+
+    This is the confabulation measure. A finding counts as supported if it is
+    the case's ground truth, one of its confirmed categories, or tagged on a
+    passage the model was handed — a passage discussing effusion as a mimic of
+    pneumothorax supports the feedback mentioning effusion. Anything else the
+    feedback names is an assertion with no source behind it.
+
+    The previous definition compared imported *vocabulary* against the control
+    arm, which reported ~100% on every run. Two reasons, both fatal: any word
+    shared by a passage and the feedback counted, so generic teaching words
+    ("always", "check", "shows") were flagged; and importing a passage's
+    vocabulary is what *grounding* looks like, so the metric was measuring the
+    desired behaviour and naming it a fault. This version asks the question the
+    report actually wants answered: did the model claim a finding nobody gave
+    it?
+
+    Still a lexical proxy, and the write-up must say so: `named_categories` is
+    alias matching with a negation guard, so it detects named findings, not
+    whether a clinical claim about one is true.
+    """
+    # `no_finding` is excluded, on the definition rather than for convenience:
+    # confabulation is asserting a finding nothing supports, and "normal" is
+    # the absence of one. Saying a film is clear when it is not is a
+    # recognition error, already measured as such. Including it would also
+    # make the metric fire on ordinary descriptive prose — "the
+    # cardiomediastinal silhouette is unremarkable" matches the `no_finding`
+    # alias list while claiming nothing about the whole film.
+    asserted = set(named_categories(_analysis_prose(prose))) - {"no_finding"}
+    if not asserted:
+        return ()
+    supported = {case.ground_truth_finding.category.value, *case.confirmed_categories}
+    by_id = corpus.by_id if corpus is not None else {}
+    for passage in passages:
+        chunk = by_id.get(passage.id)
+        if chunk is not None:
+            supported |= set(chunk.findings)
+    return tuple(sorted(asserted - supported))
 
 
 def _split_citations(text: str, supplied: int) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -482,6 +576,73 @@ def _shuffled_control(
     )
 
 
+def plan_pairs(
+    cases: Sequence[Case],
+    by_category: dict[str, list[StudentAttemptFixture]],
+    max_samples: int | None,
+) -> list[tuple[Case, StudentAttemptFixture]]:
+    """Choose the (case, student answer) pairs to evaluate, spread across
+    categories and archetypes.
+
+    The obvious loop — for each case, for each fixture — reads correctly and is
+    wrong the moment `max_cases` truncates it. The manifest is ordered by
+    category, so a cap of 30 took the first five pneumothorax cases, paired
+    each with six archetypes, and stopped. Every Phase 2 figure reported that
+    way describes five pneumothorax films while appearing to describe the
+    system: a 45-case test split spanning six categories was represented by
+    one. `_sample_queries` in `scripts/label_relevance.py` already avoids this
+    for the labelling sheet; the evaluation needs the same treatment.
+
+    So: round-robin across categories, one pair each pass, offsetting the
+    archetype by the category's position so a truncated run spans both
+    dimensions. A cap of 30 over six categories gives five pairs per category,
+    each a different archetype, instead of thirty pairs from one.
+
+    Cases whose category has no fixtures are skipped rather than paired
+    arbitrarily. A category with fewer cases than passes reuses a case with a
+    different archetype rather than dropping out of the run.
+    """
+    eligible: dict[str, list[Case]] = {}
+    for case in cases:
+        category = case.ground_truth_finding.category.value
+        if by_category.get(category):
+            eligible.setdefault(category, []).append(case)
+    if not eligible:
+        return []
+
+    order = sorted(eligible)
+    # Per category, every (case, archetype) combination exactly once, ordered
+    # so that consecutive entries differ in *both*: `sweep` fixes an archetype
+    # offset and `index` walks the cases, with the offset shifted by the
+    # case's own index. Truncating this list anywhere still leaves distinct
+    # cases and distinct archetypes. The category's position in `order` shifts
+    # the offset again, so the six categories do not all open on the same
+    # archetype.
+    per_category: dict[str, list[tuple[Case, StudentAttemptFixture]]] = {}
+    for position, category in enumerate(order):
+        here = eligible[category]
+        fixtures_here = by_category[category]
+        per_category[category] = [
+            (here[index], fixtures_here[(index + sweep + position) % len(fixtures_here)])
+            for sweep in range(len(fixtures_here))
+            for index in range(len(here))
+        ]
+
+    # Interleave: one pair from each category in turn, so a cap of 30 over six
+    # categories takes five from each rather than thirty from the first.
+    pairs: list[tuple[Case, StudentAttemptFixture]] = []
+    deepest = max(len(v) for v in per_category.values())
+    for step in range(deepest):
+        for category in order:
+            here_pairs = per_category[category]
+            if step >= len(here_pairs):
+                continue
+            pairs.append(here_pairs[step])
+            if max_samples is not None and len(pairs) >= max_samples:
+                return pairs
+    return pairs
+
+
 def run_feedback_evaluation(
     *,
     arm: FeedbackArm,
@@ -496,8 +657,10 @@ def run_feedback_evaluation(
     """Run one arm over (case, student answer) pairs.
 
     Pairs each case with the fixtures written for its confirmed category, so a
-    pneumothorax case is marked against pneumothorax answers. A case whose
-    category has no fixtures is skipped rather than paired arbitrarily.
+    pneumothorax case is marked against pneumothorax answers. `max_cases` caps
+    the number of **samples**, and `plan_pairs` decides which ones so that the
+    cap spreads across categories and archetypes rather than truncating to
+    whatever the manifest happens to list first.
     """
     parser = parser or OutputParser()
     retriever = build_retriever_for_arm(arm, corpus)
@@ -507,29 +670,23 @@ def run_feedback_evaluation(
         by_category.setdefault(fixture.category, []).append(fixture)
 
     samples: list[FeedbackSample] = []
-    pair_index = 0
-    for case in cases:
-        category = case.ground_truth_finding.category.value
-        for fixture in by_category.get(category, []):
-            if max_cases is not None and len(samples) >= max_cases:
-                break
-            samples.append(
-                _evaluate_one(
-                    arm=arm,
-                    case=case,
-                    fixture=fixture,
-                    analyzer=analyzer,
-                    image_loader=image_loader,
-                    retriever=retriever,
-                    builder=builder,
-                    parser=parser,
-                    corpus=corpus,
-                    offset=pair_index,
-                )
+    for pair_index, (case, fixture) in enumerate(
+        plan_pairs(cases, by_category, max_cases)
+    ):
+        samples.append(
+            _evaluate_one(
+                arm=arm,
+                case=case,
+                fixture=fixture,
+                analyzer=analyzer,
+                image_loader=image_loader,
+                retriever=retriever,
+                builder=builder,
+                parser=parser,
+                corpus=corpus,
+                offset=pair_index,
             )
-            pair_index += 1
-        if max_cases is not None and len(samples) >= max_cases:
-            break
+        )
 
     # The model can change mid-run if the notebook restarts, so the report names
     # the model the successful samples actually came from rather than assuming.
@@ -606,7 +763,7 @@ def _evaluate_one(
             retrieval_latency_ms=retrieval_ms,
             prompt_chars=prompt_chars,
             retrieved_ids=tuple(p.id for p in passages),
-            abstained=not passages,
+            abstained=arm.uses_retrieval and not passages,
             error=f"{type(exc).__name__}: {exc}",
         )
     latency_ms = (time.perf_counter() - started) * 1000.0
@@ -623,6 +780,16 @@ def _evaluate_one(
     prose = _feedback_prose(feedback)
     control = _shuffled_control(corpus, passages, offset)
 
+    # Vocabulary the model could only have got from a supplied passage: present
+    # in both the feedback and the passages, and absent from the student's own
+    # words. Computed here because the passages and the student text are both
+    # in scope; `compute_confabulation_rate` only has two samples to compare.
+    passage_words: set[str] = set()
+    for passage in passages:
+        passage_words |= content_words(passage.text)
+    analysed = _analysis_prose(prose)
+    imported = (content_words(analysed) & passage_words) - content_words(fixture.text)
+
     return FeedbackSample(
         **base,
         ok=True,
@@ -630,51 +797,24 @@ def _evaluate_one(
         retrieval_latency_ms=retrieval_ms,
         prompt_chars=prompt_chars,
         feedback_text=prose,
+        asserted_features=tuple(sorted(imported)),
+        unsupported_findings=_unsupported_findings(prose, passages, case, corpus),
         retrieved_ids=tuple(p.id for p in passages),
         cited_indices=cited,
         hallucinated_indices=hallucinated,
         relevant_at_k=relevant,
         scored_at_k=scored,
-        abstained=not passages,
-        lexical_overlap=lexical_overlap(prose, passages),
-        shuffled_overlap=lexical_overlap(prose, control),
+        # Abstention means retrieval was attempted and returned nothing above
+        # the score floor. An arm that has no retriever by design — `p2.4`,
+        # `p3.0-empty` — has nothing to abstain from, and marking it abstained
+        # reported the baseline as declining to answer on 100% of cases while
+        # its feedback was full and confident, and emptied the denominator of
+        # every metric that excludes abstentions.
+        abstained=arm.uses_retrieval and not passages,
+        lexical_overlap=lexical_overlap(analysed, passages),
+        shuffled_overlap=lexical_overlap(analysed, control),
         model=analysis.model_output.model,
     )
-
-
-def compute_confabulation_rate(
-    treatment: FeedbackEvalReport, control: FeedbackEvalReport
-) -> float:
-    """Share of treatment samples asserting passage content the control did not.
-
-    The headline metric, and the reason `p3.0-empty` is non-negotiable. Measured
-    as content words that appear in both the treatment's feedback and its
-    supplied passages, but in neither the control's feedback for the same
-    (case, archetype) pair nor the student's own words — i.e. language the model
-    produced only because it was handed the passage.
-
-    A lexical proxy, and the write-up must say so: it detects vocabulary
-    imported from a passage, not whether the resulting clinical claim is false.
-    """
-    control_by_key = {
-        (s.case_id, s.archetype): s for s in control.succeeded
-    }
-    considered = 0
-    flagged = 0
-    for sample in treatment.succeeded:
-        if sample.abstained:
-            continue
-        counterpart = control_by_key.get((sample.case_id, sample.archetype))
-        if counterpart is None:
-            continue
-        considered += 1
-        imported = (
-            content_words(sample.feedback_text)
-            - content_words(counterpart.feedback_text)
-        )
-        if imported:
-            flagged += 1
-    return flagged / considered if considered else 0.0
 
 
 def render_feedback_summary(reports: Sequence[FeedbackEvalReport]) -> str:
@@ -688,8 +828,7 @@ def render_feedback_summary(reports: Sequence[FeedbackEvalReport]) -> str:
     for report in reports:
         precision = report.precision_at_k
         precision_cell = "n/a" if precision is None else f"{precision:.0%}"
-        confab = report.confabulation_rate
-        confab_cell = "—" if confab is None else f"{confab:.0%}"
+        confab_cell = f"{report.confabulation_rate:.0%}"
         lines.append(
             f"| `{report.arm}` | {len(report.succeeded)} "
             f"| {report.citation_rate:.0%} "
@@ -717,8 +856,13 @@ def render_feedback_summary(reports: Sequence[FeedbackEvalReport]) -> str:
             "  not retrieval quality.",
             "- **Overlap is shown with its shuffled null in brackets.** Any two texts",
             "  about chest radiographs share words; only the gap is evidence.",
-            f"- **Confabulation is measured against `{CONTROL_ARM}`**, which is why",
-            "  that arm is not optional.",
+            "- **Confabulation is a finding the feedback named that neither the",
+            "  case nor any supplied passage supports.** Each arm computes its",
+            f"  own; `{CONTROL_ARM}` is the no-retrieval baseline the others are",
+            "  read against, and the claim retrieval has to earn is a rate below",
+            "  it. A lexical proxy: it detects a named finding, not a false claim.",
+            "- **Abstention means retrieval ran and returned nothing.** Arms with",
+            "  no retriever by design cannot abstain, so they report 0%.",
             "- **Latency is not comparable to the e1.0-e5.0 reports.** The p3.0",
             "  prompt is longer and passages lengthen it further, so a rise is",
             "  expected. Compare within Phase 2 only; `prompt_chars` is the control.",

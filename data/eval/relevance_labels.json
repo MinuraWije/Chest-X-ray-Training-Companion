@@ -4,7 +4,7 @@
     "",
     "Set `label` on each pair to one of: relevant, not_relevant, unsure.",
     "Judge the chunk against what the STUDENT WROTE and what the case",
-    "confirms \u2014 not against whether it is about the right finding in the",
+    "confirms — not against whether it is about the right finding in the",
     "abstract. A chunk on the correct topic that would not help this",
     "student with this answer is `not_relevant`.",
     "",
@@ -13,7 +13,7 @@
     "are excluded from the agreement figure and counted separately.",
     "",
     "`proxy_relevant` is what the automatic tag-overlap metric decided.",
-    "Do not read it before labelling \u2014 it is recorded so agreement can be",
+    "Do not read it before labelling — it is recorded so agreement can be",
     "computed afterwards, not as a hint."
   ],
   "pairs": [

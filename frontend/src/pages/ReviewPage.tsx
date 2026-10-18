@@ -4,36 +4,44 @@ import { useState, type ReactNode } from "react";
 import { getReview, submitReview } from "@/api/reviews";
 import { EducationalBanner } from "@/components/EducationalBanner";
 
+// These six keys are the rubric the backend accepts: `_VALID_CRITERIA` in
+// `backend/src/cxt/domain/entities/review.py`. The domain rejects any other
+// key, so a form that sends its own names produces HTTP 422 on every
+// submission — which is what this page did until the two lists were aligned.
+// `test_review_form_rubric.py` fails if they drift apart again.
+//
+// The educator scores the *model's feedback*, not the student's answer: that
+// is what FR-7 asks an educator to validate.
 const RUBRIC = [
-  "image_quality_assessment",
-  "anatomical_observation",
-  "pathology_identification",
-  "differential_ranking",
-  "clinical_reasoning",
-  "report_clarity",
+  "finding_recognition",
+  "retrieval_relevance",
+  "evidence_grounding",
+  "clarity",
+  "usefulness_for_learning",
+  "safety_trustworthiness",
 ] as const;
 
 type Criterion = (typeof RUBRIC)[number];
 
 const CRITERION_LABELS: Record<Criterion, string> = {
-  image_quality_assessment: "Image quality assessment",
-  anatomical_observation: "Anatomical observation",
-  pathology_identification: "Pathology identification",
-  differential_ranking: "Differential ranking",
-  clinical_reasoning: "Clinical reasoning",
-  report_clarity: "Report clarity",
+  finding_recognition: "Finding recognition",
+  retrieval_relevance: "Relevance of retrieved material",
+  evidence_grounding: "Grounding in the supplied evidence",
+  clarity: "Clarity",
+  usefulness_for_learning: "Usefulness for learning",
+  safety_trustworthiness: "Safety and trustworthiness",
 };
 
 type Scores = Record<Criterion, number>;
 
 function emptyScores(): Scores {
   return {
-    image_quality_assessment: 3,
-    anatomical_observation: 3,
-    pathology_identification: 3,
-    differential_ranking: 3,
-    clinical_reasoning: 3,
-    report_clarity: 3,
+    finding_recognition: 3,
+    retrieval_relevance: 3,
+    evidence_grounding: 3,
+    clarity: 3,
+    usefulness_for_learning: 3,
+    safety_trustworthiness: 3,
   };
 }
 
@@ -108,7 +116,9 @@ export function ReviewPage(): ReactNode {
           void submitMutation.mutate();
         }}
       >
-        <h2 className="mb-3 text-lg font-semibold text-slate-900">Your review</h2>
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">
+          Your review of the feedback above
+        </h2>
         <div className="space-y-3">
           {RUBRIC.map((criterion) => (
             <div key={criterion} className="flex items-center justify-between">

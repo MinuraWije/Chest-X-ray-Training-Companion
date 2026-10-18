@@ -185,9 +185,15 @@ def _validate(args: argparse.Namespace) -> int:
         raise SystemExit(
             f"{path} has {result.total_pairs} pairs and none are labelled yet."
         )
-    summary = render_agreement_summary(result)
+    # Who produced the labels is recorded in the sheet itself. It is printed in
+    # the summary and used for the table headers, so a sheet that was not
+    # labelled by a person cannot render a table claiming it was.
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    labeller = raw.get("labeller") if isinstance(raw, dict) else None
+    judge = str(labeller.get("judge", "Human")) if isinstance(labeller, dict) else "Human"
+    summary = render_agreement_summary(result, judge=judge)
     print("\n" + summary)
-    out = path.with_name("relevance_agreement.md")
+    out = path.with_name(f"{path.stem}_agreement.md")
     out.write_text(summary + "\n", encoding="utf-8")
     out.with_suffix(".json").write_text(
         json.dumps(result.to_dict(), indent=2) + "\n", encoding="utf-8"

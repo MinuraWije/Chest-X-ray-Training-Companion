@@ -24,7 +24,7 @@ from cxt.infrastructure.logging.redaction import redact_url
 logger = logging.getLogger(__name__)
 
 PROJECT_ROOT: Final[Path] = Path(__file__).resolve().parents[5]
-BACKEND_ROOT: Final[Path] = Path(__file__).resolve().parents[3]
+BACKEND_ROOT: Final[Path] = Path(__file__).resolve().parents[4]
 DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 PROCESSED_DIR: Final[Path] = DATA_DIR / "processed"
 IMAGES_DIR: Final[Path] = PROCESSED_DIR / "images"
@@ -66,6 +66,7 @@ class Settings(BaseSettings):
     cors_allow_origins: tuple[str, ...] = Field(
         default=("http://127.0.0.1:5173", "http://localhost:5173"),
     )
+
 
     data_dir: Path = DATA_DIR
     processed_dir: Path = PROCESSED_DIR

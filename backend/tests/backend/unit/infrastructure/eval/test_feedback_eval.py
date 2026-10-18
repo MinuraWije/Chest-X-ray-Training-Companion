@@ -11,19 +11,25 @@ from pathlib import Path
 
 import pytest
 
+from cxt.domain.entities.case import Case
 from cxt.domain.entities.feedback import RetrievedPassage
+from cxt.domain.entities.finding import Finding, FindingCategory
+from cxt.domain.value_objects.finding_label import FindingLabel
 from cxt.infrastructure.eval.feedback_eval import (
     CONTROL_ARM,
     FEEDBACK_ARMS,
     FeedbackEvalReport,
     FeedbackSample,
-    compute_confabulation_rate,
+    StudentAttemptFixture,
+    _unsupported_findings,
     content_words,
     lexical_overlap,
     load_attempt_fixtures,
+    plan_pairs,
     render_feedback_summary,
     resolve_feedback_arm,
 )
+from cxt.infrastructure.retrieval.corpus import Corpus, CorpusChunk
 from cxt.shared.errors import ValidationError
 
 FIXTURES_PATH = Path(__file__).resolve().parents[4] / "fixtures" / "student_attempts.json"
@@ -47,6 +53,26 @@ def _sample(**overrides: object) -> FeedbackSample:
     }
     defaults.update(overrides)
     return FeedbackSample(**defaults)  # type: ignore[arg-type]
+
+
+def _corpus_with(*, chunk_id: str, findings: tuple[str, ...], text: str) -> Corpus:
+    return Corpus(
+        version="test-corpus",
+        chunks=(
+            CorpusChunk(
+                id=chunk_id,
+                title=chunk_id.replace("-", " "),
+                text=text,
+                source="Test source",
+                url="https://example.org/doc",
+                licence="CC BY-NC-SA 3.0",
+                licence_url="https://example.org/l",
+                retrieved_on="2026-09-12",
+                findings=findings,
+                aspect="radiographic_sign",
+            ),
+        ),
+    )
 
 
 def _report(samples: tuple[FeedbackSample, ...], mode: str = "bm25") -> FeedbackEvalReport:
@@ -155,6 +181,18 @@ class TestRetrievalMetrics:
         report = _report((_sample(abstained=True), _sample(), _sample(), _sample()))
         assert report.abstention_rate == pytest.approx(0.25)
 
+    def test_an_arm_without_a_retriever_cannot_abstain(self) -> None:
+        """Abstention means retrieval ran and returned nothing above the score
+        floor. `p2.4` and `p3.0-empty` have no retriever at all, so marking
+        them abstained reported the baseline as declining to answer on every
+        case while its feedback was full and confident — and emptied the
+        denominator of cite rate and overlap, which both exclude abstentions.
+        """
+        assert not FEEDBACK_ARMS["p2.4"].uses_retrieval
+        assert not FEEDBACK_ARMS[CONTROL_ARM].uses_retrieval
+        report = _report((_sample(), _sample()), mode="null")
+        assert report.abstention_rate == 0.0
+
 
 class TestLexicalOverlap:
     def test_stopwords_are_excluded(self) -> None:
@@ -182,36 +220,190 @@ class TestLexicalOverlap:
 
 
 class TestConfabulation:
-    def test_flags_vocabulary_the_control_did_not_produce(self) -> None:
-        treatment = _report(
+    """Confabulation is a finding named with nothing behind it.
+
+    The definition these tests pin replaced one that compared imported
+    vocabulary against the control arm and reported ~100% on every run. Two
+    faults, both fatal, and both are asserted against below: generic words
+    shared with a passage were counted, and importing a passage's vocabulary is
+    what grounding looks like, so the old metric flagged the behaviour the
+    system is trying to produce.
+    """
+
+    def test_a_finding_no_passage_and_no_case_supports_is_flagged(self) -> None:
+        report = _report((_sample(unsupported_findings=("pneumothorax",)),))
+        assert report.confabulation_rate == 1.0
+
+    def test_a_feedback_naming_nothing_unsupported_is_clean(self) -> None:
+        report = _report((_sample(unsupported_findings=()),))
+        assert report.confabulation_rate == 0.0
+
+    def test_the_rate_is_per_sample_not_per_finding(self) -> None:
+        """One feedback naming three unsupported findings is one confabulation,
+        not three; the denominator is feedbacks."""
+        report = _report(
             (
-                _sample(
-                    feedback_text="A meniscus rises laterally along the chest wall.",
-                    lexical_overlap=0.4,
-                ),
+                _sample(unsupported_findings=("pneumothorax", "cardiomegaly", "nodule_or_mass")),
+                _sample(unsupported_findings=()),
             )
         )
-        control = _report(
-            (_sample(feedback_text="The right base is opacified."),), mode="null"
-        )
-        assert compute_confabulation_rate(treatment, control) == 1.0
-
-    def test_identical_output_is_not_confabulation(self) -> None:
-        text = "The right base is opacified."
-        treatment = _report((_sample(feedback_text=text),))
-        control = _report((_sample(feedback_text=text),), mode="null")
-        assert compute_confabulation_rate(treatment, control) == 0.0
+        assert report.confabulation_rate == pytest.approx(0.5)
 
     def test_abstained_samples_are_excluded(self) -> None:
-        """Nothing was supplied, so nothing could have been imported."""
-        treatment = _report((_sample(feedback_text="anything", abstained=True),))
-        control = _report((_sample(feedback_text="different"),), mode="null")
-        assert compute_confabulation_rate(treatment, control) == 0.0
+        """Nothing was supplied, so there was nothing to be unfaithful to."""
+        report = _report(
+            (
+                _sample(unsupported_findings=("pneumothorax",), abstained=True),
+                _sample(unsupported_findings=()),
+            )
+        )
+        assert report.confabulation_rate == 0.0
 
-    def test_unmatched_pairs_are_skipped_not_counted(self) -> None:
-        treatment = _report((_sample(case_id="case-1", feedback_text="a meniscus"),))
-        control = _report((_sample(case_id="case-2"),), mode="null")
-        assert compute_confabulation_rate(treatment, control) == 0.0
+    def test_no_samples_is_zero_not_an_error(self) -> None:
+        assert _report(()).confabulation_rate == 0.0
+
+
+class TestUnsupportedFindings:
+    """`_unsupported_findings` is the detector behind the rate above."""
+
+    def _case(self) -> Case:
+        return Case(
+            id="case-1",
+            image_url="x.png",
+            ground_truth_finding=Finding(
+                category=FindingCategory.PLEURAL_EFFUSION,
+                label=FindingLabel("Pleural effusion"),
+            ),
+        )
+
+    def test_the_ground_truth_finding_is_always_supported(self) -> None:
+        """`_enforce_ground_truth` puts it in the feedback, so counting it as
+        confabulation would flag every single sample."""
+        assert (
+            _unsupported_findings(
+                "There is a pleural effusion at the right base.", (), self._case(), None
+            )
+            == ()
+        )
+
+    def test_a_finding_from_a_supplied_passage_is_supported(self) -> None:
+        """A passage discussing effusion as a mimic of pneumothorax is exactly
+        why the model mentions pneumothorax; that is grounding, not invention."""
+        corpus = _corpus_with(
+            chunk_id="mimics", findings=("pneumothorax",), text="Supine effusion mimics."
+        )
+        passages = (RetrievedPassage(text="Supine effusion mimics.", source="S", id="mimics"),)
+        assert (
+            _unsupported_findings(
+                "This can resemble a pneumothorax.", passages, self._case(), corpus
+            )
+            == ()
+        )
+
+    def test_a_finding_nothing_supplied_is_flagged(self) -> None:
+        assert _unsupported_findings(
+            "There is also cardiomegaly.", (), self._case(), None
+        ) == ("cardiomegaly",)
+
+    def test_a_negated_finding_is_not_an_assertion(self) -> None:
+        """"There is no cardiomegaly" names the word without claiming it.
+        `named_categories` strips negated spans first; this test exists so a
+        change there cannot silently turn correct hedging into confabulation."""
+        assert (
+            _unsupported_findings("There is no cardiomegaly.", (), self._case(), None) == ()
+        )
+
+    def test_calling_something_normal_is_not_confabulation(self) -> None:
+        """Confabulation is asserting a finding nothing supports; "normal" is
+        the absence of one, and mis-calling a film clean is a recognition
+        error, measured elsewhere. Without this, ordinary descriptive prose
+        trips the metric: "unremarkable" is on the `no_finding` alias list."""
+        prose = "The cardiomediastinal silhouette is unremarkable."
+        assert _unsupported_findings(prose, (), self._case(), None) == ()
+
+    def test_the_parsers_own_scaffolding_is_not_an_assertion(self) -> None:
+        """`OutputParser` synthesises "Model primary: <category> ...", so the
+        category name appears in the prose whether or not the model asserted
+        it. Counting the harness's words as the model's claims would flag
+        samples for text the model never wrote."""
+        prose = (
+            "Model primary: cardiomegaly (confidence 90%). Rationale: "
+            "The costophrenic angle is blunted."
+        )
+        assert _unsupported_findings(prose, (), self._case(), None) == ()
+
+
+class TestPairPlanning:
+    """What a capped run actually evaluates.
+
+    The bug these tests exist for: the manifest is ordered by category, so the
+    obvious nested loop plus `max_cases=30` evaluated five pneumothorax cases
+    six ways and reported it as a five-arm evaluation of the system. Every
+    Phase 2 figure produced that way described one category out of six.
+    """
+
+    def _case(self, case_id: str, category: FindingCategory) -> Case:
+        return Case(
+            id=case_id,
+            image_url=f"{case_id}.png",
+            ground_truth_finding=Finding(category=category, label=FindingLabel(category.value)),
+        )
+
+    def _fixtures(self, category: str) -> list[StudentAttemptFixture]:
+        return [
+            StudentAttemptFixture(category=category, archetype=a, text="x" * 30)
+            for a in sorted(ARCHETYPES)
+        ]
+
+    def _setup(self, per_category: int = 5) -> tuple[list[Case], dict]:
+        categories = [
+            FindingCategory.PNEUMOTHORAX,
+            FindingCategory.PLEURAL_EFFUSION,
+            FindingCategory.CARDIOMEGALY,
+        ]
+        cases = [
+            self._case(f"{c.value}-{i}", c)
+            for c in categories
+            for i in range(per_category)
+        ]
+        by_category = {c.value: self._fixtures(c.value) for c in categories}
+        return cases, by_category
+
+    def test_a_cap_spreads_across_categories_instead_of_truncating(self) -> None:
+        cases, by_category = self._setup()
+        pairs = plan_pairs(cases, by_category, 9)
+        categories = [c.ground_truth_finding.category.value for c, _ in pairs]
+        assert len(pairs) == 9
+        assert sorted(set(categories)) == ["cardiomegaly", "pleural_effusion", "pneumothorax"]
+        assert all(categories.count(c) == 3 for c in set(categories))
+
+    def test_a_cap_spreads_across_archetypes_too(self) -> None:
+        """Balanced categories are not enough: thirty `correct` answers say
+        nothing about the answers that actually need feedback."""
+        cases, by_category = self._setup()
+        pairs = plan_pairs(cases, by_category, 9)
+        assert len({f.archetype for _, f in pairs}) >= 3
+
+    def test_no_pair_is_evaluated_twice(self) -> None:
+        cases, by_category = self._setup(per_category=2)
+        pairs = plan_pairs(cases, by_category, 100)
+        keys = [(c.id, f.archetype) for c, f in pairs]
+        assert len(keys) == len(set(keys))
+
+    def test_it_terminates_when_every_pair_is_used(self) -> None:
+        """2 cases x 6 archetypes x 3 categories = 36, and asking for more
+        must stop rather than spin."""
+        cases, by_category = self._setup(per_category=2)
+        assert len(plan_pairs(cases, by_category, None)) == 36
+
+    def test_a_category_without_fixtures_is_skipped(self) -> None:
+        cases, by_category = self._setup()
+        cases.append(self._case("fracture-0", FindingCategory.FRACTURE))
+        pairs = plan_pairs(cases, by_category, None)
+        assert all(c.ground_truth_finding.category != FindingCategory.FRACTURE for c, _ in pairs)
+
+    def test_no_eligible_cases_is_empty_not_an_error(self) -> None:
+        assert plan_pairs([], {}, 10) == []
 
 
 class TestFixtures:
