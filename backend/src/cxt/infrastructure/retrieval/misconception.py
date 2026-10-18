@@ -27,12 +27,15 @@ Known failure cases, stated rather than hidden:
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from typing import Final
 
 from cxt.domain.entities.finding import FindingCategory
 
 __all__ = [
     "CATEGORY_ALIASES",
+    "Mention",
+    "find_mentions",
     "named_categories",
     "negated_categories",
     "strip_negated_spans",
@@ -180,8 +183,36 @@ _CUE_RE: Final[re.Pattern[str]] = _alternation(_NEGATION_CUES)
 _POSTPOSED_RE: Final[re.Pattern[str]] = _alternation(_POSTPOSED_CUES)
 
 
+def _normalise_with_offsets(text: str) -> tuple[str, tuple[int, ...]]:
+    """Lower-case and collapse whitespace, remembering where each character came from.
+
+    `origin[i]` is the index in `text` of normalised character `i`. Matching
+    has to run on the normalised form, because that is what every alias and
+    negation window is defined against, but a highlight has to land on the
+    text the student actually typed. Collapsing "pleural\n  effusion" to one
+    space shifts every later offset, so the map is what carries a match back.
+    """
+    chars: list[str] = []
+    origin: list[int] = []
+    previous_was_space = False
+    for index, char in enumerate(text):
+        if char.isspace():
+            if not previous_was_space:
+                chars.append(" ")
+                origin.append(index)
+            previous_was_space = True
+            continue
+        previous_was_space = False
+        # `lower()` can lengthen a character ("İ" becomes two); every piece
+        # maps back to the one character it came from.
+        for piece in char.lower():
+            chars.append(piece)
+            origin.append(index)
+    return "".join(chars), tuple(origin)
+
+
 def _normalise(text: str) -> str:
-    return re.sub(r"\s+", " ", text.lower())
+    return _normalise_with_offsets(text)[0]
 
 
 def strip_negated_spans(text: str) -> str:
@@ -191,7 +222,11 @@ def strip_negated_spans(text: str) -> str:
     valid, and so two adjacent clauses cannot be fused into a phrase that was
     never written.
     """
-    normalised = _normalise(text)
+    return _blank_negated(_normalise(text))
+
+
+def _blank_negated(normalised: str) -> str:
+    """`strip_negated_spans` on text that is already normalised."""
     chars = list(normalised)
 
     def _blank(start: int, end: int) -> None:
@@ -217,6 +252,79 @@ def strip_negated_spans(text: str) -> str:
         _blank(start, match.end())
 
     return "".join(chars)
+
+
+@dataclass(frozen=True, slots=True)
+class Mention:
+    """One place in the student's text where a finding is named.
+
+    `start` and `end` index the text exactly as it was passed in, so
+    `text[start:end]` is what the student wrote, case and line breaks intact.
+    """
+
+    category: str
+    start: int
+    end: int
+    text: str
+    negated: bool
+
+
+def _alias_matches(normalised: str) -> list[tuple[int, int, str]]:
+    """Every alias match as (start, end, category) over normalised text."""
+    found: list[tuple[int, int, str]] = []
+    for category, aliases in CATEGORY_ALIASES.items():
+        for alias in aliases:
+            for match in re.finditer(rf"\b{re.escape(alias)}\b", normalised):
+                found.append((match.start(), match.end(), category))
+    return found
+
+
+def find_mentions(text: str) -> tuple[Mention, ...]:
+    """Each finding the text names, where it is, and whether it was negated.
+
+    The span-level counterpart of `named_categories` and `negated_categories`,
+    for highlighting an answer rather than retrieving against it. It is built
+    from the same normalisation, the same negation blanking and the same alias
+    patterns, so the categories it reports agree with those two functions; a
+    parity test holds it to that. They are deliberately left untouched, since
+    the misconception retrieval arm and its reported numbers depend on them.
+
+    Where aliases overlap, the longest wins ("pleural effusion" is one
+    mention, not two). A mention is negated when no unnegated match of the same
+    category falls inside it, which is exactly the condition under which
+    `named_categories` would not have counted it.
+    """
+    if not text or not text.strip():
+        return ()
+    normalised, origin = _normalise_with_offsets(text)
+    positive = _alias_matches(_blank_negated(normalised))
+
+    selected: list[tuple[int, int, str]] = []
+    for start, end, category in sorted(
+        _alias_matches(normalised), key=lambda m: (m[0], -(m[1] - m[0]))
+    ):
+        if selected and start < selected[-1][1]:
+            continue
+        selected.append((start, end, category))
+
+    mentions: list[Mention] = []
+    for start, end, category in selected:
+        negated = not any(
+            p_category == category and p_start < end and start < p_end
+            for p_start, p_end, p_category in positive
+        )
+        original_start = origin[start]
+        original_end = origin[end - 1] + 1
+        mentions.append(
+            Mention(
+                category=category,
+                start=original_start,
+                end=original_end,
+                text=text[original_start:original_end],
+                negated=negated,
+            )
+        )
+    return tuple(mentions)
 
 
 def mentions_category(text: str, category: str) -> bool:

@@ -23,12 +23,15 @@ from cxt.application.use_cases.reviews import (
 from cxt.domain.entities.review import EducatorReview
 from cxt.domain.entities.user import User
 from cxt.domain.ports.attempt_repository import IAttemptRepository
+from cxt.domain.ports.case_repository import ICaseRepository
 from cxt.domain.ports.review_repository import IReviewRepository
 from cxt.interfaces.api.dependencies import (
     get_attempt_repository,
+    get_case_repository,
     get_review_repository,
     require_role,
 )
+from cxt.interfaces.api.schemas.comparison import comparison_for
 from cxt.interfaces.api.schemas.feedback import shape_feedback
 from cxt.shared.errors import ValidationError
 
@@ -117,9 +120,12 @@ def get_queue_item(
     attempt_id: Annotated[str, Path(min_length=1, max_length=64)],
     user: User = Depends(require_role("EDUCATOR", "ADMIN")),
     attempts: IAttemptRepository = Depends(get_attempt_repository),
+    cases: ICaseRepository | None = Depends(get_case_repository),
 ) -> dict[str, object]:
     attempt, feedback = attempts.get_with_feedback(attempt_id)
-    return _shape_attempt_with_feedback(attempt, feedback)
+    shaped = _shape_attempt_with_feedback(attempt, feedback)
+    shaped["comparison"] = comparison_for(attempt, cases)
+    return shaped
 
 
 @router.get("/attempts/{attempt_id}")

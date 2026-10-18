@@ -20,8 +20,10 @@ from cxt.infrastructure.data.database import (
 from cxt.infrastructure.data.sqlite_user_repository import SqliteUserRepository
 from cxt.interfaces.api.app import create_app
 from cxt.interfaces.api.dependencies import (
+    get_case_repository,
     reset_dependency_caches_for_tests,
 )
+from cxt.shared.errors import NotFoundError
 
 
 @pytest.fixture()
@@ -219,6 +221,79 @@ class TestSubmitAttemptRoute:
             headers={"Authorization": f"Bearer {other_token}"},
         )
         assert get.status_code == 404
+
+
+class _NoCases:
+    """A case repository from which every case has gone, as after a rebuild."""
+
+    def get(self, case_id: str) -> object:
+        raise NotFoundError(f"Case not found: {case_id}")
+
+
+class TestAnswerComparison:
+    def test_submission_returns_the_comparison(
+        self, client: TestClient, student_headers: dict[str, str]
+    ) -> None:
+        text = "Small left apical pneumothorax."
+        body = client.post(
+            "/api/v1/attempts",
+            json={"caseId": "case_aaaa1111", "freeText": text},
+            headers=student_headers,
+        ).json()
+
+        comparison = body["comparison"]
+        assert comparison["version"]
+        assert comparison["matchedAnything"] is True
+        (item,) = comparison["items"]
+        assert item["category"] == "pneumothorax"
+        assert item["verdict"] == "correct"
+        (span,) = item["spans"]
+        # Offsets index the answer exactly as the API returns it.
+        assert body["freeText"][span["start"] : span["end"]] == "pneumothorax"
+
+    def test_fetching_the_attempt_returns_the_same_comparison(
+        self, client: TestClient, student_headers: dict[str, str]
+    ) -> None:
+        post = client.post(
+            "/api/v1/attempts",
+            json={"caseId": "case_aaaa1111", "freeText": "There is no pneumothorax here."},
+            headers=student_headers,
+        ).json()
+
+        fetched = client.get(f"/api/v1/attempts/{post['id']}", headers=student_headers).json()
+
+        assert fetched["comparison"] == post["comparison"]
+        assert fetched["comparison"]["items"][0]["verdict"] == "wrongly_excluded"
+
+    def test_a_missing_case_gives_no_comparison_rather_than_an_error(
+        self, client: TestClient, student_headers: dict[str, str]
+    ) -> None:
+        post = client.post(
+            "/api/v1/attempts",
+            json={"caseId": "case_aaaa1111", "freeText": _VALID_FREE_TEXT},
+            headers=student_headers,
+        ).json()
+        client.app.dependency_overrides[get_case_repository] = _NoCases  # type: ignore[attr-defined]
+
+        response = client.get(f"/api/v1/attempts/{post['id']}", headers=student_headers)
+
+        assert response.status_code == 200
+        assert response.json()["comparison"] is None
+        assert response.json()["freeText"] == _VALID_FREE_TEXT
+
+    def test_the_list_route_carries_no_comparison(
+        self, client: TestClient, student_headers: dict[str, str]
+    ) -> None:
+        client.post(
+            "/api/v1/attempts",
+            json={"caseId": "case_aaaa1111", "freeText": _VALID_FREE_TEXT},
+            headers=student_headers,
+        )
+
+        items = client.get("/api/v1/attempts", headers=student_headers).json()["items"]
+
+        assert items
+        assert all("comparison" not in item for item in items)
 
 
 class TestInventoryIncludesAttempts:

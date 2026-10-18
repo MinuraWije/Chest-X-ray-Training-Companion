@@ -19,7 +19,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from cxt import __version__
+from cxt.domain.entities.case import Case
 from cxt.domain.entities.finding import FindingCategory
+from cxt.domain.entities.role import Role
+from cxt.domain.entities.user import User
 from cxt.domain.ports.case_repository import ICaseRepository
 from cxt.infrastructure.config.settings import MedGemmaRuntime, Settings, get_settings
 from cxt.infrastructure.ml.kaggle_tunnel_client import KaggleTunnelMedGemmaClient
@@ -27,9 +30,38 @@ from cxt.interfaces.api.dependencies import current_user, get_case_repository
 from cxt.interfaces.api.routes.attempts import router as attempts_router
 from cxt.interfaces.api.routes.auth import router as auth_router
 from cxt.interfaces.api.routes.reviews import router as reviews_router
-from cxt.shared.errors import DomainError, NotFoundError, UpstreamUnavailableError
+from cxt.shared.errors import (
+    AuthorizationError,
+    DomainError,
+    NotFoundError,
+    UpstreamUnavailableError,
+)
 
 logger = logging.getLogger(__name__)
+
+
+def _case_to_dto(case: Case, user: User) -> dict[str, object]:
+    """One case as the frontend's `Case`, with the answer withheld from students.
+
+    A student opens a case in order to interpret it, so the confirmed finding
+    must not reach them before they have written an answer. Hiding it only in
+    the UI is not enough: the field would still be readable in the network
+    tab, and the answer comparison shown after submission would then be
+    marking a student who could have read the answer first. Educators and
+    admins still receive it, because curating and reviewing cases needs it.
+    """
+    dto: dict[str, object] = {
+        "id": case.id,
+        "imageUrl": case.image_url,
+        "clinicalContext": case.metadata.get("clinical_context", ""),
+        "patientAge": case.metadata.get("patient_age", "") or "",
+        "patientSex": case.metadata.get("patient_sex", "") or "",
+        "viewPosition": case.metadata.get("view_position", "") or "",
+    }
+    if user.role is not Role.STUDENT:
+        dto["groundTruthCategory"] = case.ground_truth_finding.category.value
+        dto["groundTruthLabel"] = case.ground_truth_finding.label.value
+    return dto
 
 
 def create_app() -> FastAPI:
@@ -114,29 +146,21 @@ def create_app() -> FastAPI:
         limit: int | None = Query(default=None, ge=1, le=200),
         offset: int = Query(default=0, ge=0),
         repo: ICaseRepository | None = Depends(get_case_repository),
-        _user: object = Depends(current_user),
+        user: User = Depends(current_user),
     ) -> dict[str, object]:
         if repo is None:
             raise UpstreamUnavailableError(
                 "No curated case manifest found. From the backend folder run: "
                 "python scripts\\dev.py real-data"
             )
+        # Filtering by finding answers the question the student is meant to
+        # work out: `?finding=pneumothorax` lists exactly the pneumothorax cases.
+        if finding is not None and user.role is Role.STUDENT:
+            raise AuthorizationError("Filtering cases by finding is not available to students.")
         cases = repo.list(split=split, finding=finding, limit=limit, offset=offset)
         total = repo.count(split=split, finding=finding)
         return {
-            "items": [
-                {
-                    "id": c.id,
-                    "imageUrl": c.image_url,
-                    "clinicalContext": c.metadata.get("clinical_context", ""),
-                    "groundTruthCategory": c.ground_truth_finding.category.value,
-                    "groundTruthLabel": c.ground_truth_finding.label.value,
-                    "patientAge": c.metadata.get("patient_age", "") or "",
-                    "patientSex": c.metadata.get("patient_sex", "") or "",
-                    "viewPosition": c.metadata.get("view_position", "") or "",
-                }
-                for c in cases
-            ],
+            "items": [_case_to_dto(c, user) for c in cases],
             "total": total,
         }
 
@@ -144,7 +168,7 @@ def create_app() -> FastAPI:
     def get_case(
         case_id: str,
         repo: ICaseRepository | None = Depends(get_case_repository),
-        _user: object = Depends(current_user),
+        user: User = Depends(current_user),
     ) -> dict[str, object]:
         if repo is None:
             raise UpstreamUnavailableError(
@@ -155,16 +179,7 @@ def create_app() -> FastAPI:
             c = repo.get(case_id)
         except NotFoundError as exc:
             raise NotFoundError(str(exc)) from exc
-        return {
-            "id": c.id,
-            "imageUrl": c.image_url,
-            "clinicalContext": c.metadata.get("clinical_context", ""),
-            "groundTruthCategory": c.ground_truth_finding.category.value,
-            "groundTruthLabel": c.ground_truth_finding.label.value,
-            "patientAge": c.metadata.get("patient_age", "") or "",
-            "patientSex": c.metadata.get("patient_sex", "") or "",
-            "viewPosition": c.metadata.get("view_position", "") or "",
-        }
+        return _case_to_dto(c, user)
 
     app.include_router(auth_router)
     app.include_router(attempts_router)

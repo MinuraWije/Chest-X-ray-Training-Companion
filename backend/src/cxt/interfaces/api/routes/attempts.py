@@ -32,6 +32,7 @@ from cxt.interfaces.api.dependencies import (
     get_retriever,
     require_role,
 )
+from cxt.interfaces.api.schemas.comparison import comparison_for
 from cxt.interfaces.api.schemas.feedback import shape_feedback, shape_passage
 from cxt.shared.errors import NotFoundError, UpstreamUnavailableError, ValidationError
 
@@ -178,6 +179,7 @@ def submit_attempt(
     return {
         **_attempt_to_dto(result.attempt),
         "feedback": shape_feedback(result.feedback),
+        "comparison": comparison_for(result.attempt, cases),
     }
 
 
@@ -186,13 +188,17 @@ def get_attempt(
     attempt_id: Annotated[str, Path(min_length=1, max_length=64)],
     user: User = Depends(require_role("STUDENT", "EDUCATOR", "ADMIN")),
     attempts: IAttemptRepository = Depends(get_attempt_repository),
+    cases: ICaseRepository | None = Depends(get_case_repository),
 ) -> dict[str, object]:
     attempt, feedback = attempts.get_with_feedback(attempt_id)
+    # Checked before the comparison is built: it names the case's confirmed
+    # findings, so another student's attempt must 404 rather than leak them.
     if user.role.value == "STUDENT" and user.id != attempt.student_id:
         raise NotFoundError(f"Attempt not found: {attempt_id}")
     return {
         **_attempt_to_dto(attempt),
         "feedback": shape_feedback(feedback) if feedback is not None else None,
+        "comparison": comparison_for(attempt, cases),
     }
 
 

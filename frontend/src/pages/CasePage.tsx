@@ -5,13 +5,15 @@ import { getCase, submitAttempt } from "@/api/cases";
 import type { StudentAttempt } from "@/types/api";
 import { CxrViewer } from "@/components/CxrViewer";
 import { AttemptForm, type AttemptFormValues } from "@/components/AttemptForm";
-import { FeedbackSection } from "@/components/FeedbackSection";
+import { AnswerComparison } from "@/components/AnswerComparison";
+import { FeedbackSection, KEY_OBSERVATIONS_ID } from "@/components/FeedbackSection";
 import { EducationalBanner } from "@/components/EducationalBanner";
+import { caseTitle } from "@/utils/caseTitle";
 
 export function CasePage(): ReactNode {
   const { caseId } = useParams<{ caseId: string }>();
   const queryClient = useQueryClient();
-  const [feedback, setFeedback] = useState<StudentAttempt["feedback"]>(null);
+  const [attempt, setAttempt] = useState<StudentAttempt | null>(null);
 
   const caseQuery = useQuery({
     queryKey: ["case", caseId],
@@ -24,8 +26,8 @@ export function CasePage(): ReactNode {
       if (caseId === undefined) throw new Error("Missing case id.");
       return submitAttempt({ caseId, freeText: values.freeText });
     },
-    onSuccess: (attempt) => {
-      setFeedback(attempt.feedback);
+    onSuccess: (submitted) => {
+      setAttempt(submitted);
       void queryClient.invalidateQueries({ queryKey: ["case", caseId] });
     },
   });
@@ -60,7 +62,7 @@ export function CasePage(): ReactNode {
     <div className="mx-auto max-w-6xl p-6">
       <EducationalBanner />
       <h1 className="mb-1 text-2xl font-semibold">
-        Case of {c.groundTruthLabel}
+        {caseTitle(c.id)}
       </h1>
       {demoLine !== null && (
         <p className="mb-4 text-sm text-slate-600">{demoLine}</p>
@@ -72,10 +74,10 @@ export function CasePage(): ReactNode {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <CxrViewer
           src={c.imageUrl}
-          alt={`Chest radiograph for case of ${c.groundTruthLabel}`}
+          alt={`Chest radiograph, ${caseTitle(c.id)}`}
         />
         <div className="space-y-4">
-          {feedback === null ? (
+          {attempt === null ? (
             <AttemptForm
               submitting={submitMutation.isPending}
               onSubmit={async (values) => {
@@ -83,7 +85,20 @@ export function CasePage(): ReactNode {
               }}
             />
           ) : (
-            <FeedbackSection feedback={feedback} />
+            <>
+              {attempt.comparison != null && (
+                <AnswerComparison
+                  freeText={attempt.freeText}
+                  comparison={attempt.comparison}
+                  whereToLookId={attempt.feedback !== null ? KEY_OBSERVATIONS_ID : undefined}
+                />
+              )}
+              {attempt.feedback !== null ? (
+                <FeedbackSection feedback={attempt.feedback} />
+              ) : (
+                <p className="text-sm text-slate-500">No feedback available yet.</p>
+              )}
+            </>
           )}
           {submitMutation.isError && (
             <p className="rounded-md border border-red-200 bg-red-50 p-2 text-sm text-red-700">

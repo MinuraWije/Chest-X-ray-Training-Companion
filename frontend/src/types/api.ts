@@ -68,11 +68,49 @@ export interface Case {
   id: string;
   imageUrl: string;
   clinicalContext: string;
-  groundTruthCategory: FindingCategory;
-  groundTruthLabel: string;
+  /**
+   * The confirmed answer. Sent to educators and admins only: a student must
+   * not be able to read it before writing an interpretation.
+   */
+  groundTruthCategory?: FindingCategory;
+  groundTruthLabel?: string;
   patientAge: string;
   patientSex: string;
   viewPosition: string;
+}
+
+/**
+ * How one finding in the case record relates to the student's answer.
+ * Computed by keyword matching against the case record, never by the model.
+ */
+export type ComparisonVerdict =
+  | "correct"
+  | "also_present"
+  | "not_in_record"
+  | "missed"
+  | "wrongly_excluded"
+  | "correctly_excluded";
+
+export interface TextSpan {
+  /** Offsets into `StudentAttempt.freeText`, end exclusive. */
+  start: number;
+  end: number;
+}
+
+export interface ComparisonItem {
+  category: FindingCategory;
+  label: string;
+  verdict: ComparisonVerdict;
+  /** Where the answer names this finding. Empty for `missed`. */
+  spans: TextSpan[];
+}
+
+export interface AnswerComparison {
+  /** Which matching rules produced this result. */
+  version: string;
+  /** False when no finding name in the answer was recognised at all. */
+  matchedAnything: boolean;
+  items: ComparisonItem[];
 }
 
 export interface StudentAttempt {
@@ -82,6 +120,11 @@ export interface StudentAttempt {
   freeText: string;
   submittedAt: string;
   feedback: Feedback | null;
+  /**
+   * Present on a single attempt; absent from list responses. Null when the
+   * case is no longer in the manifest.
+   */
+  comparison?: AnswerComparison | null;
 }
 
 export interface EducatorReview {

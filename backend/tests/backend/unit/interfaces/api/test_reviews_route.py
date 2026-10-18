@@ -277,6 +277,25 @@ class TestReviewQueueItem:
         assert body["id"] == attempt_id
         assert body["feedback"] is not None
 
+    def test_educator_sees_the_comparison_the_student_saw(
+        self, client: TestClient, settings: Settings
+    ) -> None:
+        student = _register(client, "s10@example.com", "STUDENT")
+        attempt_id = _submit_attempt(client, student["accessToken"])
+        _admin_id, admin_token = _seed_admin(settings, "a10@example.com")
+
+        as_student = client.get(
+            f"/api/v1/attempts/{attempt_id}",
+            headers={"Authorization": f"Bearer {student['accessToken']}"},
+        ).json()
+        as_educator = client.get(
+            f"/api/v1/reviews/queue/{attempt_id}",
+            headers={"Authorization": f"Bearer {admin_token}"},
+        ).json()
+
+        assert as_educator["comparison"] is not None
+        assert as_educator["comparison"] == as_student["comparison"]
+
     def test_student_cannot_get_queue_item(self, client: TestClient) -> None:
         student = _register(client, "s9@example.com", "STUDENT")
         attempt_id = _submit_attempt(client, student["accessToken"])

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { listCases } from "@/api/cases";
 import { EducationalBanner } from "@/components/EducationalBanner";
 import type { Case } from "@/types/api";
+import { caseTitle } from "@/utils/caseTitle";
 
 function demographicsLine(c: Case): string | null {
   const parts: string[] = [];
@@ -69,14 +70,14 @@ export function CaseListPage(): ReactNode {
                   <div className="aspect-square w-full bg-slate-900">
                     <img
                       src={c.imageUrl}
-                      alt={`Chest radiograph for case of ${c.groundTruthLabel}`}
+                      alt={`Chest radiograph, ${caseTitle(c.id)}`}
                       loading="lazy"
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="p-3">
                     <div className="text-sm font-semibold text-slate-900">
-                      Case of {c.groundTruthLabel}
+                      {caseTitle(c.id)}
                     </div>
                     {demo !== null && (
                       <div className="mt-0.5 text-xs text-slate-500">{demo}</div>

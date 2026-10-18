@@ -1,14 +1,18 @@
 import type { ReactNode } from "react";
 import type { Feedback, RetrievedPassage } from "@/types/api";
 
+/** Anchor for the answer comparison's "See where to look" links. */
+export const KEY_OBSERVATIONS_ID = "key-observations";
+
 interface FeedbackSectionProps {
   heading: string;
   body: string;
+  id?: string;
 }
 
-function Block({ heading, body }: FeedbackSectionProps): ReactNode {
+function Block({ heading, body, id }: FeedbackSectionProps): ReactNode {
   return (
-    <section className="mb-3 last:mb-0">
+    <section id={id} className="mb-3 scroll-mt-4 last:mb-0">
       <h3 className="text-sm font-semibold text-slate-900">{heading}</h3>
       <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{body}</p>
     </section>
@@ -58,7 +62,7 @@ export function FeedbackSection({ feedback }: FeedbackViewProps): ReactNode {
         </div>
       )}
 
-      <Block heading="Key observations" body={keyObservations} />
+      <Block heading="Key observations" body={keyObservations} id={KEY_OBSERVATIONS_ID} />
       <Block heading="Teaching point" body={teachingPoint} />
 
       {sources.length > 0 && <SourceList sources={sources} />}
